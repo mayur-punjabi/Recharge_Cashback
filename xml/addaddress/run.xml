@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="RechargeSuite">
+	<test name="RechargeSuite">
+		<parameter name="isParallel" value="false" />
+		<parameter name="starting" value="" />
+		<parameter name="ending" value="" />
+		<parameter name="statusFilePath" value="" />
+		<classes>
+			<class name="suites.appsuites.AddAddressSuite" />
+		</classes>
+	</test>
+</suite>

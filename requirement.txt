@@ -1,0 +1,40 @@
+2 new scripts
+1: add gv - done
+login to amazoan
+launch gift voucher url
+click on first 'Amazon Pay eGift Card'
+enter amount from sheet
+enter email from sheet
+enter quantity from sheet
+click add to cart
+repeat from lauch gift voucher url
+logout
+
+2: recharge electricity - in progress
+login to amazon
+select state
+select electricity provider
+enter amount
+enter id
+then same as recharge
+
+// my torrent ids
+pending - 2136124 
+paid - 110738 
+
+gv cashback
+check if offer present on new window
+if offer present add gv
+take the available cashback
+then take 25 more
+if no offer get the amount available then take that much
+
+
+9693427418	9693427418    125
+9061640533	9061640533    125
+9559745785	9559745785    125
+
+9006952389	9006952389     50
+6268563236	6268563236     50
+9665042918	9665042918     50
+

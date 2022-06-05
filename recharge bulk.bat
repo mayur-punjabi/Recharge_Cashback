@@ -1,0 +1,1 @@
+java -jar project/executeBulk.jar RechargeSuite

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="RechargeSuite"> 
+ <test name="RechargeSuite"> 
+  <parameter name="isParallel" value="true" /> 
+  <parameter name="starting" value="2" /> 
+  <parameter name="ending" value="2" /> 
+  <parameter name="statusFilePath" value="./status/recharge_06_March_2022_23_52_42.html" /> 
+  <classes> 
+   <class name="suites.appsuites.RechargeSuite" /> 
+  </classes> 
+ </test>
+</suite>

@@ -1,0 +1,157 @@
+Andhra Pradesh:
+Central Power Distribution Company Ltd. of Andhra Pradesh (APCPDCL)
+Eastern Power Distribution Co Ltd (APEPDCL)
+Southern Power Distribution Co Ltd (APSPDCL)
+
+Arunachal Pradesh:
+Department of Power, Government of Arunachal Pradesh
+
+Assam:
+Assam Power Distribution Company Ltd
+
+Bihar:
+North Bihar Power Distribution Company Ltd.
+South Bihar Power Distribution Company Ltd.
+
+Chandigarh:
+Electricity Department Chandigarh
+
+Chattisgarh:
+Chhattisgarh State Power Distribution Co. Ltd
+
+Dadra and Nagar Haveli:
+DNH Power Distribution Company Limited
+
+Daman and Diu:
+Daman and Diu Electricity
+
+Goa:
+Goa Electricity Department
+
+Gujarat:
+Select Electricity Board to proceed
+Dakshin Gujarat Vij Company Limited (DGVCL)
+Gift Power Company Limited
+Madhya Gujarat Vij Company Limited (MGVCL)
+Paschim Gujarat Vij Company Limited (PGVCL)
+Torrent Power - Ahmedabad
+Torrent Power - Surat
+Uttar Gujarat Vij Company Limited (UGVCL)
+
+Haryana:
+Select Electricity Board to proceed
+Dakshin Haryana Bijli Vitran Nigam
+Uttar Haryana Bijli Vitran Nigam Limited
+
+Himachal Pradesh:
+Himachal Pradesh State Electricity Board
+
+Jammu and Kashmir:
+Jammu and Kashmir Power Development Department
+
+Jharkhand:
+Select Electricity Board to proceed
+Jamshedpur Utilities & Services Company Ltd (JUSCO)
+Jharkhand Bijli Vitran Nigam Limited (JBVNL)
+
+Karnataka:
+Select Electricity Board to proceed
+Bangalore Electricity (BESCOM)
+Chamundeshwari Electricity Supply Corporation Limited
+Gulbarga Electricity Supply Company Limited (GESCOM)
+Hubli Electricity
+Mangalore Electricity Supply Co. Ltd (MESCOM)
+Mangalore Electricity Supply Company LTD (Non RAPDR)
+
+KERALA:
+Select Electricity Board to proceed
+Kannan Devan Hills Plantations Company Private Limited
+Kerala State Electricity Board Ltd. (KSEBL)
+Thrissur Corporation Electricity Department
+
+Lakshadweep:
+Lakshadweep Electricity Department
+
+Madhya Pradesh:
+Select Electricity Board to proceed
+M.P. Madhya Kshetra Vidyut Vitaran - RURAL
+M.P. Madhya Kshetra Vidyut Vitaran - URBAN
+M.P. Paschim Kshetra Vidyut Vitaran
+M.P. Poorv Kshetra Vidyut Vitaran
+M.P. Madhya Kshetra Vidyut Vitaran - Flat Rate Agriculture Bill
+
+Maharashtra:
+Select Electricity Board to proceed
+Adani Electricity
+B.E.S.T Mumbai
+Maharashtra State Electricity Distribution Company Ltd ( MSEDCL)/ Mahavitran
+Tata Power - Mumbai
+Torrent Power - Shil, Mumbra & Kalwa
+Torrent Power - Bhiwandi
+
+Meghalaya:
+Meghalaya Power Dist Corp Ltd
+
+Mizoram:
+Power & Electricity Department - Mizoram
+
+Nagaland:
+Department of Power, Nagaland
+
+New Delhi:
+BSES Rajdhani Power Limited
+BSES Rajdhani Prepaid Meter Recharge
+BSES Yamuna Power Limited
+BSES Yamuna Prepaid Meter Recharge
+New Delhi Municipal Council (NDMC) - Electricity
+Tata Power - Delhi
+
+Odisha:
+TP Northern Odisha Distribution Limited
+TP Central Odisha Distribution Limited
+TP Southern Odisha Distribution Limited (TPSODL)
+TP Western Odisha Distribution Limited
+
+Puducherry:
+Government of Puducherry Electricity Department
+
+Punjab:
+Punjab State Power Corporation Ltd. (PSPCL)
+
+Rajasthan:
+Ajmer Vidyut Vitran Nigam Limited (AVVNL)
+Bharatpur Electricity Services Ltd. (BESL)
+Bikaner Electricity Supply Limited (BkESL)
+Jaipur Vidyut Vitran Nigam (JVVNL)
+Jodhpur Vidyut Vitran Nigam Limited (JDVVNL)
+Kota Electricity Distribution Limited (KEDL)
+TP Ajmer Distribution Ltd (TPADL)
+
+Sikkim:
+Sikkim Power - RURAL
+Sikkim Power - URBAN
+
+Tamil Nadu:
+Tamil Nadu Electricity Board (TNEB)
+
+Telangana:
+Northern Power Distribution of Telangana Ltd
+
+Tripura:
+Tripura Electricity
+
+UTTAR PRADESH:
+Kanpur Electricity Supply Company Ltd
+Noida Power Company
+TPRMG
+Torrent Power - Agra
+Uttar Pradesh Power Corp Ltd (UPPCL) - RURAL
+Uttar Pradesh Power Corp Ltd (UPPCL) - URBAN
+
+Uttarakhand:
+Uttarakhand Power Corporation Limited
+
+West Bengal:
+CESC Limited
+India Power Corporation Limited (IPCL)
+West Bengal State Electricity Distribution Co. Ltd (WBSEDCL)

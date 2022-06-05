@@ -1,0 +1,16 @@
+Pre-requisite:
+java and maven should be set
+
+Need to provide:
+java 
+Data -> cashbackBase.html
+cashback.jar
+cashback.csv
+
+Execution:
+Add data in cashback.csv. close the file and then run the utility.
+
+Pending:
+Skip generating test-output - done
+Create a bat file - done
+handle cookies 

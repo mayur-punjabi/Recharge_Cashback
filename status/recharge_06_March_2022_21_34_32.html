@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+ <head> 
+  <meta charset="UTF-8"> 
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>Recharge Status</title> 
+  <style>
+      table {
+        table-layout: fixed;
+        width: 100%;
+      }
+      td,
+      th {
+        padding: 0.5rem;
+        overflow-wrap: break-word;
+      }
+      th {
+        background: #336699;
+        color: white;
+        text-align: left;
+      }
+      select {
+        margin-left: 1rem;
+      }
+      a {
+        margin-top: 0.25rem;
+        display: inline-block;
+        padding: 0.25rem;
+        text-align: center;
+        text-decoration: none;
+        border: 1px solid black;
+      }
+      a:link,
+      a:visited,
+      a:hover,
+      a:active {
+        color: black;
+      }
+      th button,
+      th span {
+        margin-left: 0.25rem;
+      }
+    </style> 
+ </head> 
+ <body> 
+  <table cellspacing="0" cellpadding="0" border="1" width="100%"> 
+   <tbody> 
+    <tr> 
+     <th style="width: 15ch">AMAZON ID</th> 
+     <th style="width: 15ch">AMAZON PWD</th> 
+     <th style="width: 20ch">GV</th> 
+     <th style="width: 10ch">TYPE</th> 
+     <th style="width: 15ch">SUBSCRIBER ID</th> 
+     <th style="width: 10ch">AMOUNT</th> 
+     <th style="width: 15ch">NAME</th> 
+     <th style="width: 15ch">NO</th> 
+     <th style="width: 10ch">PINCODE</th> 
+     <th style="width: 15ch">FLAT</th> 
+     <th style="width: 15ch">AREA</th> 
+     <th> Status <select> <option>All</option> <option>Pass</option> <option>Fail</option> </select> <button id="copy-numbers">Copy Numbers</button> <button id="copy-all">Copy All</button> <span id="count"></span> </th> 
+    </tr> 
+    <tr> 
+     <td>9775082037</td> 
+     <td>121990</td> 
+     <td>U68W-TUHVAW-PQAA</td> 
+     <td>TATASKY</td> 
+     <td>1430852473</td> 
+     <td>150</td> 
+     <td>Sanjay Nagar</td> 
+     <td>6357032108</td> 
+     <td>382330</td> 
+     <td>283 EW ARS KUBERNAGAR</td> 
+     <td>KUBERNAGAR C WARD</td> 
+     <td style="color:red;">Name field not present after clicking Place order and buy button<br><a target="_blank" href="screenshots/screenshot_06_March_2022_21_35_43.jpeg">View Screenshot</a></td> 
+    </tr> 
+    <tr> 
+     <td>9083500241</td> 
+     <td>121990</td> 
+     <td>7YY4-MTGU7E-TAVM</td> 
+     <td>TATASKY</td> 
+     <td>1430852259</td> 
+     <td>150</td> 
+     <td>soniya sirwani</td> 
+     <td>6357030388</td> 
+     <td>382330</td> 
+     <td>283 EW ARS KUBERNAGAR</td> 
+     <td>KUBERNAGAR C WARD</td> 
+     <td style="color:green;">Done</td> 
+    </tr> 
+    <tr> 
+     <td>9775107877</td> 
+     <td>121990</td> 
+     <td>T7RT-N3AUF6-DRRK</td> 
+     <td>TATASKY</td> 
+     <td>1430852705</td> 
+     <td>150</td> 
+     <td>HEMA bhambavani</td> 
+     <td>6357032101</td> 
+     <td>382330</td> 
+     <td>283 EW ARS KUBERNAGAR</td> 
+     <td>KUBERNAGAR C WARD</td> 
+     <td style="color:green;">Done</td> 
+    </tr> 
+    <tr> 
+     <td>9083494387</td> 
+     <td>121990</td> 
+     <td>B4CC-WJRJM6-MUEY</td> 
+     <td>TATASKY</td> 
+     <td>1430852325</td> 
+     <td>150</td> 
+     <td>Gaurang velle</td> 
+     <td>6357035702</td> 
+     <td>382330</td> 
+     <td>283 EW ARS KUBERNAGAR</td> 
+     <td>KUBERNAGAR C WARD</td> 
+     <td style="color:green;">Done</td> 
+    </tr>
+    <tr> 
+     <td>9775080591</td> 
+     <td>121990</td> 
+     <td>KJUC-GBGUPA-NU6B</td> 
+     <td>TATASKY</td> 
+     <td>1430852739</td> 
+     <td>150</td> 
+     <td>Asha Raval</td> 
+     <td>6357035704</td> 
+     <td>382330</td> 
+     <td>283 EW ARS KUBERNAGAR</td> 
+     <td>KUBERNAGAR C WARD</td> 
+     <td style="color:green;">Done</td> 
+    </tr> 
+    <tr> 
+     <td>9083497854</td> 
+     <td>121990</td> 
+     <td>WTMV-GWJVWX-4Y8Y</td> 
+     <td>TATASKY</td> 
+     <td>1430853133</td> 
+     <td>150</td> 
+     <td>soniya sirwani</td> 
+     <td>6357030388</td> 
+     <td>382330</td> 
+     <td>283 EW ARS KUBERNAGAR</td> 
+     <td>KUBERNAGAR C WARD</td> 
+     <td style="color:green;">Done</td> 
+    </tr>
+    <tr> 
+     <td>9775079774</td> 
+     <td>121990</td> 
+     <td>M6F3-68GUTM-7WPG</td> 
+     <td>TATASKY</td> 
+     <td>1430852523</td> 
+     <td>150</td> 
+     <td>HEMA bhambavani</td> 
+     <td>6357032101</td> 
+     <td>382330</td> 
+     <td>283 EW ARS KUBERNAGAR</td> 
+     <td>KUBERNAGAR C WARD</td> 
+     <td style="color:green;">Done</td> 
+    </tr> 
+    <tr> 
+     <td>9775070892</td> 
+     <td>121990</td> 
+     <td>PMPT-CAAXCA-Q3BV</td> 
+     <td>TATASKY</td> 
+     <td>1430852200</td> 
+     <td>150</td> 
+     <td>Gaurang velle</td> 
+     <td>6357035702</td> 
+     <td>382330</td> 
+     <td>283 EW ARS KUBERNAGAR</td> 
+     <td>KUBERNAGAR C WARD</td> 
+     <td style="color:green;">Done</td> 
+    </tr> 
+    <tr> 
+     <td>9083527987</td> 
+     <td>121990</td> 
+     <td>T8HJ-6BPFDA-M7GC</td> 
+     <td>TATASKY</td> 
+     <td>1430852622</td> 
+     <td>150</td> 
+     <td>Asha Raval</td> 
+     <td>6357035704</td> 
+     <td>382330</td> 
+     <td>283 EW ARS KUBERNAGAR</td> 
+     <td>KUBERNAGAR C WARD</td> 
+     <td style="color:green;">Done</td> 
+    </tr> 
+    <tr> 
+     <td>9775112894</td> 
+     <td>121990</td> 
+     <td>WGM3-KHDMJR-47NN</td> 
+     <td>TATASKY</td> 
+     <td>1430852440</td> 
+     <td>150</td> 
+     <td>soniya sirwani</td> 
+     <td>6357030388</td> 
+     <td>382330</td> 
+     <td>283 EW ARS KUBERNAGAR</td> 
+     <td>KUBERNAGAR C WARD</td> 
+     <td style="color:red;">Recharge processing didn't appear<br><a target="_blank" href="screenshots/screenshot_06_March_2022_21_40_14.jpeg">View Screenshot</a></td> 
+    </tr>
+   </tbody> 
+  </table> 
+  <script>
+      // filter pass and fail records
+      document.querySelector("select").addEventListener("change", (e) => {
+        let select = e.target;
+        let selectedOptionText = select.options[select.selectedIndex].text;
+        [...document.querySelectorAll("tr")].forEach((tr) => {
+          let lastChildElement = tr.lastElementChild;
+          let lastChildElementTag = tr.lastElementChild.tagName.toLowerCase();
+          if (selectedOptionText === "Pass") {
+            if (
+              lastChildElementTag === "th" ||
+              (lastChildElementTag === "td" &&
+                lastChildElement.innerText.trim() === "Done")
+            ) {
+              tr.style.display = "table-row";
+            } else {
+              tr.style.display = "none";
+            }
+          } else if (selectedOptionText === "Fail") {
+            if (
+              lastChildElementTag === "th" ||
+              (lastChildElementTag === "td" &&
+                lastChildElement.innerText.trim() !== "Done")
+            ) {
+              tr.style.display = "table-row";
+            } else {
+              tr.style.display = "none";
+            }
+          } else {
+            tr.style.display = "table-row";
+          }
+
+          // showing filtered count
+          showCount(selectedOptionText);
+        });
+      });
+
+      // copies text to clipboard
+      function fallbackCopyTextToClipboard(text) {
+        var textArea = document.createElement("textarea");
+        textArea.value = text;
+
+        // Avoid scrolling to bottom
+        textArea.style.top = "0";
+        textArea.style.left = "0";
+        textArea.style.position = "fixed";
+
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        try {
+          let successful = document.execCommand("copy");
+          let msg = successful ? "successful" : "unsuccessful";
+          console.log("Fallback: Copying text command was " + msg);
+        } catch (err) {
+          console.error("Fallback: Oops, unable to copy", err);
+        }
+
+        document.body.removeChild(textArea);
+      }
+
+      // copies entire table data to clipboard
+      document.querySelector("#copy-all").addEventListener("click", () => {
+        let text = [];
+
+        [...document.querySelectorAll("tr")].forEach((tr) => {
+          if (
+            window.getComputedStyle(tr).getPropertyValue("display") !== "none"
+          ) {
+            text.push(tr.innerText.replace("View Screenshot", ""));
+          }
+        });
+        text.shift();
+        fallbackCopyTextToClipboard(text.join(""));
+      });
+
+      // copies number to clipboard
+      document.querySelector("#copy-numbers").addEventListener("click", () => {
+        let text = [];
+        [...document.querySelectorAll("tr")].forEach((tr) => {
+          if (
+            window.getComputedStyle(tr).getPropertyValue("display") !== "none"
+          ) {
+            text.push(tr.firstElementChild.innerText);
+          }
+        });
+        text.shift();
+        fallbackCopyTextToClipboard(text.join("\n"));
+      });
+
+      // show the count in Status header
+      const showCount = (option) => {
+        let filterCount = -1;
+        let totalCount = -1;
+
+        [...document.querySelectorAll("tr")].forEach((tr) => {
+          if (
+            window.getComputedStyle(tr).getPropertyValue("display") !== "none"
+          ) {
+            filterCount++;
+          }
+          totalCount++;
+        });
+
+        const text =
+          option === "All"
+            ? `Count: ${totalCount}`
+            : `Count: ${filterCount}/${totalCount}`;
+        document.querySelector("#count").innerText = text;
+      };
+
+      // showing total count when page loads
+      showCount("All");
+    </script>  
+ </body>
+</html>

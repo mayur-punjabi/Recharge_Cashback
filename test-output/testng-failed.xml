@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite thread-count="-1" guice-stage="DEVELOPMENT" name="Failed suite [RechargeSuite]">
+  <test name="RechargeSuite(failed)">
+    <parameter name="ending" value=""/>
+    <parameter name="statusFilePath" value=""/>
+    <parameter name="isParallel" value="false"/>
+    <parameter name="starting" value=""/>
+    <classes>
+      <class name="suites.appsuites.ElectricitySuite">
+        <methods>
+          <include name="initializeObjects"/>
+          <include name="setUp"/>
+          <include name="teardown"/>
+          <include name="electricity" invocation-numbers="0"/>
+        </methods>
+      </class> <!-- suites.appsuites.ElectricitySuite -->
+    </classes>
+  </test> <!-- RechargeSuite(failed) -->
+</suite> <!-- Failed suite [RechargeSuite] -->
