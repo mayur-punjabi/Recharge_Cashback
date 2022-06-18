@@ -1,2 +1,4 @@
 status/
 project/logs/
+target/
+test-output/
