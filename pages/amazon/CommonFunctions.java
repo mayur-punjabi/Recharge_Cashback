@@ -1063,16 +1063,8 @@ public class CommonFunctions extends CommonActions implements Shared_OR {
 			log.error("Exception occurred in entering " + cvv + " in '" + cvvInput, e);
 		}
 
-		// uncheck save card
-		handleCheckbox(saveCard, false);
-
-		// wait for enter details every time and click it
-		if (waitForElement(enterCardDetailsEveryTime, 10, WaitType.visibilityOfElementLocated)) {
-			log.debug("Enter details card every time popup present");
-			click(enterCardDetailsEveryTime);
-		} else {
-			log.error("Enter details card every time popup isn't present");
-		}
+		// check save card
+		handleCheckbox(saveCard, true);
 
 		return failure;
 	}

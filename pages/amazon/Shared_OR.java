@@ -32,7 +32,6 @@ public interface Shared_OR {
 	By addCardButton = By.xpath("//span[contains(@class,'button-input')][.//span[text()='Add your card']]");
 	By cvvInput = By.xpath("//input[contains(@name,'addCreditCardVerificationNumber')][@type='password']");
 	By saveCard = By.xpath("//input[@type='checkbox'][./following-sibling::*[contains(text(),'RBI')]]");
-	By enterCardDetailsEveryTime = By.xpath("//span[text()='I will enter details every time']/parent::span");
 	By continueWithoutSavingCard = By.xpath("//span[text()='Continue without saving card']/parent::span");
 	By enterOTPOrPassword = By.xpath("//a[contains(normalize-space(text()),'OTP or password')]");
 	By pinInput = By.xpath("//input[@name='IPIN' or @name='txtPassword']");
