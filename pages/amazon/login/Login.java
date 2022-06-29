@@ -33,25 +33,61 @@ public class Login extends CommonFunctions implements Login_OR {
 
 		setValue(emailOrPhone, phoneOrEmail);
 
-		if (!isElementDisplayed(continueButton)) {
-			failure = "Continue button isn't present after entering phone number";
-			reportFailure(failure);
-			return failure;
-		}
-		click(continueButton);
-		waitForPageLoad(60);
+		// setting password if displayed for e.g. in case of store login else setting it
+		// in next screen
+		if (isElementDisplayed(passwordField)) {
 
-		if (waitForElement(incorrectPhoneNo, 5, WaitType.visibilityOfElementLocated)) {
-			failure = "Incorrect phone number";
-			reportFailure(failure);
-			return failure;
+			setValue(passwordField, password);
+
+			if (!isElementDisplayed(signInButton)) {
+				failure = "Sign in button isn't present after entering email and password";
+				reportFailure(failure);
+				return failure;
+			}
+
+			click(signInButton);
+			waitForPageLoad(60);
+
+			if (waitForElement(incorrectEmail, 5, WaitType.visibilityOfElementLocated)) {
+				failure = "Incorrect Email";
+				reportFailure(failure);
+				return failure;
+			}
+
+			if (isElementDisplayed(incorrectPassword)) {
+				failure = "Incorrect password";
+				reportFailure(failure);
+				return failure;
+			}
+
+			if (!isElementDisplayed(passwordField)) {
+				failure = "Second Password field isn't present. Email or password might be wrong";
+				reportFailure(failure);
+				return failure;
+			}
+		} else {
+
+			if (!isElementDisplayed(continueButton)) {
+				failure = "Continue button isn't present after entering phone number";
+				reportFailure(failure);
+				return failure;
+			}
+			click(continueButton);
+			waitForPageLoad(60);
+
+			if (waitForElement(incorrectPhoneNo, 5, WaitType.visibilityOfElementLocated)) {
+				failure = "Incorrect phone number";
+				reportFailure(failure);
+				return failure;
+			}
+
+			if (!isElementDisplayed(passwordField)) {
+				failure = "Password field isn't present. Phone number might be wrong";
+				reportFailure(failure);
+				return failure;
+			}
 		}
 
-		if (!isElementDisplayed(passwordField)) {
-			failure = "Password field isn't present. Phone number might be wrong";
-			reportFailure(failure);
-			return failure;
-		}
 		setValue(passwordField, password);
 
 		if (!isElementDisplayed(signInButton)) {

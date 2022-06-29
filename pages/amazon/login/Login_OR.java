@@ -9,6 +9,7 @@ public interface Login_OR {
 	By passwordField = By.name("password");
 	By signInButton = By.id("signInSubmit");
 	By incorrectPhoneNo = By.xpath("//*[normalize-space(text())='Incorrect phone number']");
+	By incorrectEmail = By.xpath("//*[normalize-space(text())='We cannot find an account with that email address']");
 	By incorrectPassword = By.xpath("//*[normalize-space(text())='Your password is incorrect']");
 
 	By clearCookies = By.xpath("//h4[normalize-space(text())='Enter the characters you see']");
