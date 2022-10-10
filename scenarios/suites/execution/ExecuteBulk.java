@@ -2,7 +2,10 @@ package suites.execution;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import framework.input.Configuration;
@@ -11,7 +14,7 @@ public class ExecuteBulk extends Operations {
 
 	public static void main(String[] args) {
 		ExecuteBulk eb = new ExecuteBulk();
-		eb.executeSuite(args[0]);
+		eb.executeSuite(args[0], args[1]);
 	}
 
 	/**
@@ -19,7 +22,7 @@ public class ExecuteBulk extends Operations {
 	 * 
 	 * @param suite CashbackSuite or RechargeSuite
 	 */
-	private void executeSuite(String suite) {
+	private void executeSuite(String suite, String isAndroid) {
 
 		String flow = suite.replace("Suite", "").toLowerCase();
 		List<String> statusFiles = new ArrayList<>();
@@ -29,21 +32,23 @@ public class ExecuteBulk extends Operations {
 
 		int totalRecords = data.size();
 		int noOfExecutions = Integer.parseInt(Configuration.getProperty("noOfExecutions"));
-		int noOfRecordsPerExecution = (int) Math.floor(totalRecords / noOfExecutions);
 
 		List<Process> aliveExecutions = new CopyOnWriteArrayList<>();
 
-		for (int division = 0; division < noOfExecutions; division++) {
+		Map<Integer, Map<String, Integer>> divisionMap = getDivsion(totalRecords);
+		log.debug(divisionMap.toString());
 
-			int starting = (division * noOfRecordsPerExecution) + 1;
-			int ending = division == noOfExecutions - 1 ? totalRecords : (division + 1) * noOfRecordsPerExecution;
+		for (Entry<Integer, Map<String, Integer>> entry : divisionMap.entrySet()) {
+
+			int starting = entry.getValue().get("starting");
+			int ending = entry.getValue().get("ending");
 
 			String statusFilePath = createStatusFile(flow);
 			statusFiles.add(statusFilePath);
 
 			try {
 				Process p = Runtime.getRuntime().exec("cmd /c start /wait cmd.exe /c java -jar project/execute.jar "
-						+ suite + " " + starting + " " + ending + " " + statusFilePath);
+						+ suite + " true " + starting + " " + ending + " " + statusFilePath + " " + isAndroid);
 				aliveExecutions.add(p);
 
 				try {
@@ -77,5 +82,55 @@ public class ExecuteBulk extends Operations {
 
 		// clear the CSV file
 		clearCSVFile(csvFilePath);
+	}
+
+	private Map<Integer, Map<String, Integer>> getDivsion(int totalRecords) {
+
+		Map<Integer, Map<String, Integer>> divisionMap = new HashMap<>();
+
+		int noOfExecutions = Integer.parseInt(Configuration.getProperty("noOfExecutions"));
+
+		if (totalRecords <= noOfExecutions) {
+
+			noOfExecutions = totalRecords;
+
+			for (int division = 0; division < noOfExecutions; division++) {
+
+				int starting = division + 1;
+				int ending = division + 1;
+
+				divisionMap.put(division, new HashMap<>());
+				divisionMap.get(division).put("starting", starting);
+				divisionMap.get(division).put("ending", ending);
+			}
+		} else {
+
+			int range = 0;
+			int remiander = totalRecords % noOfExecutions;
+			totalRecords = totalRecords - remiander;
+			int noOfEnteriesPerExecution = totalRecords / noOfExecutions;
+
+			for (int division = 0; division < noOfExecutions; division++) {
+
+				if (range == 0) {
+					range++;
+				}
+
+				int starting = range;
+				int ending = range + noOfEnteriesPerExecution - 1;
+				range = range + noOfEnteriesPerExecution;
+
+				if (division < remiander) {
+					ending++;
+					range++;
+				}
+
+				divisionMap.put(division, new HashMap<>());
+				divisionMap.get(division).put("starting", starting);
+				divisionMap.get(division).put("ending", ending);
+			}
+		}
+
+		return divisionMap;
 	}
 }

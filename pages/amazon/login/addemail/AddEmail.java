@@ -69,13 +69,13 @@ public class AddEmail extends CommonFunctions implements AddEmail_OR {
 		// handle otp
 
 // verify email added
-		if (waitForElement(passwordChanged, 10, WaitType.visibilityOfElementLocated)) {
-			log.debug("Password changed");
-		} else {
-			failure = "Failed to change password";
-			reportFailure(failure);
-			return failure;
-		}
+//		if (waitForElement(passwordChanged, 10, WaitType.visibilityOfElementLocated)) {
+//			log.debug("Password changed");
+//		} else {
+//			failure = "Failed to change password";
+//			reportFailure(failure);
+//			return failure;
+//		}
 
 		return failure;
 	}

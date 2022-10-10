@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="CheckAvailabilitySuite">
+<parameter name="isAndroid" value="true"></parameter>
+	<test name="CheckAvailabilitySuite">
+		<parameter name="isParallel" value="false" />
+		<parameter name="starting" value="" />
+		<parameter name="ending" value="" />
+		<parameter name="statusFilePath" value="" />
+		<classes>
+			<class name="suites.appsuites.CookiesSuite" />
+		</classes>
+	</test>
+</suite>

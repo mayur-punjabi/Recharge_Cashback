@@ -1,5 +1,11 @@
 package amazon.login;
 
+import org.apache.commons.codec.binary.Base64;
+
+import com.assertthat.selenium_shutterbug.core.Shutterbug;
+import com.twocaptcha.TwoCaptcha;
+import com.twocaptcha.captcha.Normal;
+
 import amazon.CommonFunctions;
 import framework.constants.WaitType;
 import framework.input.Configuration;
@@ -9,6 +15,9 @@ public class Login extends CommonFunctions implements Login_OR {
 	public String launchAndLogin(String phoneOrEmail, String password) {
 
 		String failure = "";
+
+		String solveCaptcha = Configuration.getProperty("solveCaptcha");
+		boolean handleCaptcha = solveCaptcha != null && solveCaptcha.trim().equalsIgnoreCase("yes");
 
 		String amazonURL = Configuration.getProperty("amazonSignInURL");
 		if (amazonURL == null || amazonURL.trim().isEmpty()) {
@@ -24,6 +33,11 @@ public class Login extends CommonFunctions implements Login_OR {
 		}
 
 		waitForPageLoad(60);
+
+		if (waitForElement(signInLink, 5, WaitType.visibilityOfElementLocated)) {
+			click(signInLink);
+			waitForPageLoad(60);
+		}
 
 		if (!waitForElement(emailOrPhone, 7, WaitType.visibilityOfElementLocated)) {
 			failure = "Phone field isn't present. Amazon sign in url might be wrong";
@@ -61,31 +75,92 @@ public class Login extends CommonFunctions implements Login_OR {
 			}
 
 			if (!isElementDisplayed(passwordField)) {
-				failure = "Second Password field isn't present. Email or password might be wrong";
-				reportFailure(failure);
-				return failure;
+
+				if (waitForElement(cart, 5, WaitType.visibilityOfElementLocated)) {
+					log.debug("Amazon login successful");
+					return failure;
+				} else if (isElementDisplayed(clearCookies)) {
+					log.debug("Captcha present instead of second password field");
+				} else {
+					failure = "Second Password field isn't present. Email or password might be wrong";
+					reportFailure(failure);
+					return failure;
+				}
+			}
+
+			if (waitForElement(clearCookies, 2, WaitType.visibilityOfElementLocated)) {
+
+				if (handleCaptcha) {
+
+					if (isElementDisplayed(passwordField)) {
+						setValue(passwordField, password);
+					}
+
+//					pause(10000);
+					solveCaptcha();
+
+					if (isElementDisplayed(signInButton)) {
+						click(signInButton);
+					} else if (isElementDisplayed(continueButton)) {
+						click(continueButton);
+
+						waitForPageLoad(60);
+						if (isElementDisplayed(signInWithPassword)) {
+							click(signInWithPassword);
+						}
+						waitForPageLoad(60);
+					}
+					waitForPageLoad(60);
+
+				} else {
+					failure = "Clear cookies";
+					reportFailure(failure);
+					return failure;
+				}
 			}
 		} else {
 
-			if (!isElementDisplayed(continueButton)) {
-				failure = "Continue button isn't present after entering phone number";
-				reportFailure(failure);
-				return failure;
+			boolean clickContinue = true;
+			waitForPageLoad(60);
+			if (isElementDisplayed(signInWithPassword)) {
+				click(signInWithPassword);
+				clickContinue = false;
 			}
-			click(continueButton);
 			waitForPageLoad(60);
 
-			if (waitForElement(incorrectPhoneNo, 5, WaitType.visibilityOfElementLocated)) {
-				failure = "Incorrect phone number";
-				reportFailure(failure);
-				return failure;
-			}
+			if (clickContinue) {
+				if (!isElementDisplayed(continueButton)) {
+					failure = "Continue button isn't present after entering phone number";
+					reportFailure(failure);
+					return failure;
+				}
+				click(continueButton);
+				waitForPageLoad(60);
 
-			if (!isElementDisplayed(passwordField)) {
-				failure = "Password field isn't present. Phone number might be wrong";
-				reportFailure(failure);
-				return failure;
+				if (isElementDisplayed(signInWithPassword)) {
+					click(signInWithPassword);
+					clickContinue = false;
+				}
+				waitForPageLoad(60);
+
+				if (waitForElement(incorrectPhoneNo, 5, WaitType.visibilityOfElementLocated)) {
+					failure = "Incorrect phone number";
+					reportFailure(failure);
+					return failure;
+				}
+
+				if (!isElementDisplayed(passwordField)) {
+					failure = "Password field isn't present. Phone number might be wrong";
+					reportFailure(failure);
+					return failure;
+				}
 			}
+		}
+
+		waitForPageLoad(60);
+		if (waitForElement(cart, 5, WaitType.visibilityOfElementLocated)) {
+			log.debug("Amazon login successful");
+			return failure;
 		}
 
 		setValue(passwordField, password);
@@ -104,11 +179,182 @@ public class Login extends CommonFunctions implements Login_OR {
 			return failure;
 		}
 
-		if (waitForElement(clearCookies, 2, WaitType.visibilityOfElementLocated)) {
-			failure = "Clear cookies";
+		for (int i = 0; i < 2; i++) {
+			if (waitForElement(clearCookies, 5, WaitType.visibilityOfElementLocated)) {
+
+				if (handleCaptcha) {
+
+					if (isElementDisplayed(passwordField)) {
+						setValue(passwordField, password);
+					}
+
+//					pause(10000);
+					solveCaptcha();
+
+					if (isElementDisplayed(signInButton)) {
+						click(signInButton);
+					} else if (isElementDisplayed(continueButton)) {
+						click(continueButton);
+					}
+					waitForPageLoad(60);
+
+					// setting password if displayed
+					if (waitForElement(passwordField, 5, WaitType.visibilityOfElementLocated)) {
+
+						setValue(passwordField, password);
+
+						if (!isElementDisplayed(signInButton)) {
+							failure = "Sign in button isn't present after entering email and password";
+							reportFailure(failure);
+							return failure;
+						}
+
+						click(signInButton);
+						waitForPageLoad(60);
+					}
+
+				} else {
+					failure = "Clear cookies";
+					reportFailure(failure);
+					return failure;
+				}
+			} else {
+				break;
+			}
+		}
+
+		if (waitForElement(cart, 5, WaitType.visibilityOfElementLocated)) {
+			log.debug("Amazon login successful");
+		} else {
+			failure = "Amazon login failed";
 			reportFailure(failure);
 			return failure;
 		}
+
+		return failure;
+	}
+
+	public String launchAndLoginStore(String phoneOrEmail, String password) {
+
+		String failure = "";
+
+		String amazonURL = Configuration.getProperty("amazonStoreSignInURL");
+		if (amazonURL == null || amazonURL.trim().isEmpty()) {
+			failure = "Amazon store sign in url not present in config";
+			log.error(failure);
+			return failure;
+		}
+
+		if (!launchApplication(amazonURL)) {
+			failure = "Failed to launch amazon store sign in url - " + amazonURL;
+			reportFailure(failure);
+			return failure;
+		}
+
+		waitForPageLoad(60);
+
+		if (!waitForElement(emailOrPhone, 7, WaitType.visibilityOfElementLocated)) {
+			failure = "Phone field isn't present. Amazon sign in url might be wrong";
+			reportFailure(failure);
+			return failure;
+		}
+
+		setValue(emailOrPhone, phoneOrEmail);
+		setValue(passwordField, password);
+
+		click(signInButton);
+		waitForPageLoad(60);
+
+		if (waitForElement(incorrectPhoneNo, 5, WaitType.visibilityOfElementLocated)) {
+			failure = "Incorrect phone number";
+			reportFailure(failure);
+			return failure;
+		}
+
+		if (waitForElement(incorrectPassword, 5, WaitType.visibilityOfElementLocated)) {
+			failure = "Incorrect password";
+			reportFailure(failure);
+			return failure;
+		}
+
+		if (waitForElement(clearCookies, 2, WaitType.visibilityOfElementLocated)) {
+
+			pause(30000);
+
+			setValue(passwordField, password);
+
+			click(signInButton);
+			waitForPageLoad(60);
+
+			// setting password if displayed
+			if (waitForElement(passwordField, 5, WaitType.visibilityOfElementLocated)) {
+
+				setValue(passwordField, password);
+
+				if (!isElementDisplayed(signInButton)) {
+					failure = "Sign in button isn't present after entering email and password";
+					reportFailure(failure);
+					return failure;
+				}
+
+				click(signInButton);
+				waitForPageLoad(60);
+			}
+
+			if (waitForElement(clearCookies, 2, WaitType.visibilityOfElementLocated)) {
+				failure = "Clear cookies";
+				reportFailure(failure);
+				return failure;
+			}
+		}
+
+		if (waitForElement(otp, 2, WaitType.visibilityOfElementLocated)) {
+			failure = "Mobile OTP required for store login";
+			reportFailure(failure);
+			return failure;
+		}
+
+		if (waitForElement(approveNotification, 5, WaitType.visibilityOfElementLocated)) {
+
+			log.debug("Approve notification is present");
+
+			if (!waitForElement(approveNotification, 60 * 5, WaitType.invisibilityOfElementLocated)) {
+				failure = "Notification not approved";
+				reportFailure(failure);
+				return failure;
+			}
+
+			waitForPageLoad(60);
+			if (waitForElement(passwordField, 5, WaitType.visibilityOfElementLocated)) {
+				setValue(passwordField, password);
+
+				click(signInButton);
+				waitForPageLoad(60);
+
+				if (waitForElement(clearCookies, 2, WaitType.visibilityOfElementLocated)) {
+					// wait to solve captcha
+					pause(30000);
+
+					setValue(passwordField, password);
+
+					click(signInButton);
+					waitForPageLoad(60);
+				}
+
+				if (waitForElement(otp, 2, WaitType.visibilityOfElementLocated)) {
+					failure = "Mobile OTP required for store login";
+					reportFailure(failure);
+					return failure;
+				}
+			}
+
+		} else if (!isElementDisplayed(cart)) {
+			failure = "Approve notification not present or Amazon login failed";
+			reportFailure(failure);
+			return failure;
+		}
+
+		waitForPageLoad(60);
 
 		if (waitForElement(cart, 5, WaitType.visibilityOfElementLocated)) {
 			log.debug("Amazon login successful");
@@ -139,6 +385,36 @@ public class Login extends CommonFunctions implements Login_OR {
 		} else {
 			log.error("Sight impaired link not present");
 
+		}
+	}
+
+	public void solveCaptcha() {
+
+		for (int i = 0; i < 3; i++) {
+			try {
+				String encodedCaptcha = Base64
+						.encodeBase64String(Shutterbug.shootElement(driver, getWebElement(captchaImg)).getBytes());
+				log.debug("Captcha - " + encodedCaptcha);
+
+				String captchaKey = Configuration.getProperty("twoCaptchaKey");
+				if (captchaKey == null) {
+					captchaKey = "";
+				}
+
+				TwoCaptcha solver = new TwoCaptcha(captchaKey);
+				Normal captcha = new Normal();
+				captcha.setBase64(encodedCaptcha);
+				solver.solve(captcha);
+				String captchaSolution = captcha.getCode();
+				log.debug("Captcha solution - " + captchaSolution);
+
+				setValue(captchaInput, captchaSolution);
+				break;
+			} catch (Exception e) {
+				e.printStackTrace();
+				log.error("Failed to solve captcha", e);
+				pause(2000);
+			}
 		}
 	}
 }

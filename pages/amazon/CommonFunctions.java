@@ -689,7 +689,7 @@ public class CommonFunctions extends CommonActions implements Shared_OR {
 			}
 
 			// check for recharge processing
-			failure = waitForPaymentProcessing(10, false, isCard);
+			failure = waitForPaymentProcessing(10, false, isCard, "");
 			if (failure.equals("Recharge was successful")) {
 				failure = "";
 				return failure;
@@ -843,7 +843,7 @@ public class CommonFunctions extends CommonActions implements Shared_OR {
 		}
 
 		// wait for recharge processing
-		failure = waitForPaymentProcessing(30, true, isCard);
+		failure = waitForPaymentProcessing(30, true, isCard, "");
 		if (failure.equals("Recharge was successful")) {
 			failure = "";
 		}
@@ -921,7 +921,7 @@ public class CommonFunctions extends CommonActions implements Shared_OR {
 		return failure;
 	}
 
-	private String addCard() {
+	public String addCard() {
 
 		String failure = "";
 
@@ -1078,7 +1078,7 @@ public class CommonFunctions extends CommonActions implements Shared_OR {
 	 * 
 	 * @return
 	 */
-	private String waitForPaymentProcessing(int timeToWait, boolean reportNoProcessing, boolean isCard) {
+	public String waitForPaymentProcessing(int timeToWait, boolean reportNoProcessing, boolean isCard, String pin) {
 
 		String failure = "";
 
@@ -1092,37 +1092,50 @@ public class CommonFunctions extends CommonActions implements Shared_OR {
 			}
 			waitForPageLoad(120);
 
-			// wait for ipin or OTP or password link
-			if (!waitForElement(pinOrOTPOrPassword, 30, WaitType.visibilityOfElementLocated)) {
-				failure = "Pin or Password link isn't present";
-				reportFailure(failure);
-				return failure;
+			if (pin.trim().equalsIgnoreCase("manual")) {
+
+				int otpWait = 15;
+				try {
+					otpWait = Integer.parseInt(Configuration.getProperty("otpWait"));
+				} catch (Exception e) {
+					log.error("Failed to parse otp wait", e);
+				}
+				pause(otpWait * 1000);
+			} else {
+				// wait for ipin or OTP or password link
+				if (!waitForElement(pinOrOTPOrPassword, 30, WaitType.visibilityOfElementLocated)) {
+					failure = "Pin or Password link isn't present";
+					reportFailure(failure);
+					return failure;
+				}
+
+				// click otp or password link
+				if (isElementDisplayed(enterOTPOrPassword)) {
+					log.debug("Enter OTP or Password link present");
+					click(enterOTPOrPassword);
+				}
+
+				// wait for amazon loading/please wait
+				waitForPageLoad(120);
+				if (!waitForElement(amazonImgBlackLoading, 120, WaitType.invisibilityOfElementLocated)) {
+					failure = "Loading didn't complete after clicking Continue to Pay button/Place and order button";
+
+				}
+				waitForPageLoad(120);
+
+				// wait for ipin
+				if (!waitForElement(pinInput, 30, WaitType.visibilityOfElementLocated)) {
+					failure = "Pin input isn't present";
+					reportFailure(failure);
+					return failure;
+				}
+
+				// enter pin
+				if (pin.trim().isEmpty()) {
+					pin = Configuration.getProperty("cardPin");
+				}
+				setValue(pinInput, pin);
 			}
-
-			// click otp or password link
-			if (isElementDisplayed(enterOTPOrPassword)) {
-				log.debug("Enter OTP or Password link present");
-				click(enterOTPOrPassword);
-			}
-
-			// wait for amazon loading/please wait
-			waitForPageLoad(120);
-			if (!waitForElement(amazonImgBlackLoading, 120, WaitType.invisibilityOfElementLocated)) {
-				failure = "Loading didn't complete after clicking Continue to Pay button/Place and order button";
-
-			}
-			waitForPageLoad(120);
-
-			// wait for ipin
-			if (!waitForElement(pinInput, 30, WaitType.visibilityOfElementLocated)) {
-				failure = "Pin input isn't present";
-				reportFailure(failure);
-				return failure;
-			}
-
-			// enter pin
-			String pin = Configuration.getProperty("cardPin");
-			setValue(pinInput, pin);
 
 			// click submit
 			click(pinSubmit);
@@ -1193,7 +1206,7 @@ public class CommonFunctions extends CommonActions implements Shared_OR {
 	 * 
 	 * @return
 	 */
-	private String otpRequired() {
+	public String otpRequired() {
 
 		String failure = "";
 

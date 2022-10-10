@@ -19,7 +19,7 @@ public interface Shared_OR {
 			.xpath("//span[contains(text(),'Amazon Pay balance')]//ancestor::div[@class='a-radio']//label");
 
 	By cardLabel = By.xpath("//input[@value='SelectableAddCreditCard']//parent::label");
-	By addCardLink = By.xpath("//a[text()='Add a credit or debit card']");
+	By addCardLink = By.xpath("//a[text()='Add a credit or debit card' or text()='Enter card details']");
 	By addCardIframe = By.xpath("//iframe[@name='ApxSecureIframe']");
 	By cardNumberInput = By.xpath("//input[@name='addCreditCardNumber']");
 	By cardNameInput = By.xpath("//input[contains(@name,'accountHolderName')]");
@@ -29,15 +29,20 @@ public interface Shared_OR {
 			.xpath("//select[contains(@name,'year')]//following-sibling::span[contains(@class,'button-dropdown')]");
 	By monthYearOption = By.xpath("//li[contains(@class,'dropdown-item')]/a[text()='%s']");
 	By defaultPayment = By.xpath("//input[contains(@name,'setBuyingPreference')]");
-	By addCardButton = By.xpath("//span[contains(@class,'button-input')][.//span[text()='Add your card']]");
+	By addCardButton = By.xpath(
+			"//span[contains(@class,'button-input')][.//span[text()='Add your card' or text()='Enter card details']]");
 	By cvvInput = By.xpath("//input[contains(@name,'addCreditCardVerificationNumber')][@type='password']");
 	By saveCard = By.xpath("//input[@type='checkbox'][./following-sibling::*[contains(text(),'RBI')]]");
 	By continueWithoutSavingCard = By.xpath("//span[text()='Continue without saving card']/parent::span");
 	By enterOTPOrPassword = By.xpath("//a[contains(normalize-space(text()),'OTP or password')]");
-	By pinInput = By.xpath("//input[@name='IPIN' or @name='txtPassword']");
+	By pinInput = By.xpath("//input[@name='IPIN' or @name='txtPassword' or @name='txtotp' or @name='OTPvalue']");
 	By pinOrOTPOrPassword = By.xpath(
-			"//a[contains(normalize-space(text()),'OTP or password')] | //input[@name='IPIN' or @name='txtPassword']");
-	By pinSubmit = By.xpath("//input[@type='submit']");
+			"//a[contains(normalize-space(text()),'OTP or password')] | //input[@name='IPIN' or @name='txtPassword' or @name='txtotp' or @name='OTPvalue']");
+	By pinSubmit = By.xpath("//input[@type='submit' or contains(@id,'proceed') or @value='Submit']");
+
+	By netBankingLabel = By.xpath("//input[contains(@name,'NetBanking')]//parent::label");
+	By chooseAnOptionButton = By.xpath("//span[text()='Choose an Option']");
+	By bankOption = By.xpath("//li[@role='option']/a[text()='%s']");
 
 	By placeOrderAndPay = By.xpath("(//input[following-sibling::*[normalize-space()='Place Order and Pay']])[last()]");
 
@@ -61,12 +66,13 @@ public interface Shared_OR {
 
 	By amazonImgBlackLoading = By.id("redirect-spinner-overlay");
 	By blackLoading = By.id("pageWaitSpinner");
+	By blackLoading2 = By.className("a-spinner-medium");
 	By yellowLoading = By.xpath("//img[contains(@src,'loading')]");
 	By yellowLoading2 = By.xpath("//img[contains(@src,'Spinner')]");
 
 	// waitForPaymentProcessing()
 	By rechargeSuccessful = By.xpath(
-			"//h4[contains(text(),'Your')][contains(text(),'recharge is successful') or contains(text(),'is successful')]");
+			"//h4[(contains(text(),'Your') and (contains(text(),'recharge is successful') or contains(text(),'is successful'))) or contains(text(),'Order placed')]");
 	By rechargePending = By
 			.xpath("//h4[contains(text(),'Your')][contains(text(),'is pending') or contains(text(),'within')]");
 

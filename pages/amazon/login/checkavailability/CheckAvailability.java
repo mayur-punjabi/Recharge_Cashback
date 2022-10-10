@@ -114,7 +114,11 @@ public class CheckAvailability extends CommonFunctions implements CheckAvailabil
 
 		String urlString = "https://api.telegram.org/bot%s/sendMessage?chat_id=%s&text=%s";
 		String apiToken = "5420936301:AAEw9zAREo7LNMJY2RlyJzSSgOJnzvFZjFI";
-		String chatId = "@amzontb";
+		String chatId = Configuration.getProperty("telegramGroupLink");
+		if (chatId == null || chatId.trim().isEmpty()) {
+			failure = "Telegram link not present in config";
+		}
+		chatId = "@" + chatId.trim();
 
 		urlString = String.format(urlString, apiToken, chatId, message);
 		try {

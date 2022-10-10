@@ -130,6 +130,19 @@
 			<artifactId>httpclient</artifactId>
 			<version>4.5.1</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.assertthat/selenium-shutterbug -->
+		<dependency>
+			<groupId>com.assertthat</groupId>
+			<artifactId>selenium-shutterbug</artifactId>
+			<version>1.6</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.github.2captcha/2captcha-java -->
+		<dependency>
+			<groupId>com.github.2captcha</groupId>
+			<artifactId>2captcha-java</artifactId>
+			<version>1.0.1</version>
+		</dependency>
+
 	</dependencies>
 	<version>0.0.1</version>
 </project>

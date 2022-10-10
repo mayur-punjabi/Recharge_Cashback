@@ -20,7 +20,7 @@ public class CookiesSuite extends BaseSuite {
 		data = cf.getCSVData("./excel/cookies.csv");
 	}
 
-	@Test(priority = 0, enabled = false)
+	@Test(priority = 0, enabled = true)
 	public void cookies() {
 
 		for (int i = 0; i < data.size(); i++) {
@@ -47,7 +47,7 @@ public class CookiesSuite extends BaseSuite {
 
 				// clear cookies, local storage, session storage if exception occurred in
 				// previous record
-				cf.clearBrowserStorage();
+//				cf.clearBrowserStorage();
 
 				// login to amazon
 				Login login = new Login();
@@ -57,10 +57,11 @@ public class CookiesSuite extends BaseSuite {
 				// detected
 				if (failure.equals("Clear cookies")) {
 					cf.log.debug("Clear cookies for - " + i);
+//					login.solveCaptcha();
 //					cf.clearBrowserStorage();
 
-					cf.updateDriver();
-					failure = login.launchAndLogin(phoneOrEmail, password);
+//					cf.updateDriver();
+//					failure = login.launchAndLogin(phoneOrEmail, password);
 				}
 
 				// logout from amazon
@@ -78,7 +79,7 @@ public class CookiesSuite extends BaseSuite {
 		}
 	}
 
-	@Test(priority = 0, enabled = false)
+	@Test(priority = 1, enabled = false)
 	public void cookies2() {
 
 		for (int i = 0; i < 1000; i++) {

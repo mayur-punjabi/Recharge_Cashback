@@ -66,7 +66,7 @@ public class AddEmailSuite extends BaseSuite {
 
 					// change password
 					ChangePassword changePassword = new ChangePassword();
-					failure = changePassword.changePassword(password, newPassword);
+//					failure = changePassword.changePassword(password, newPassword);
 				}
 
 				// logout from amazon

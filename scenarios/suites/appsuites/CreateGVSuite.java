@@ -73,7 +73,7 @@ public class CreateGVSuite extends BaseSuite {
 				if (failure.isEmpty()) {
 					loggedIn = true;
 					CreateGV addGV = new CreateGV();
-					failure = addGV.createGV(amount, quantity, email);
+					failure = addGV.createGV(amount, quantity, email, false);
 				} else {
 					failure += " Skipping creating all GV as login failed";
 				}
