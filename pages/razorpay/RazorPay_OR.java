@@ -20,7 +20,8 @@ public interface RazorPay_OR {
 	By wallet = By.xpath("//button[.//div[text()='Wallet']]");
 	By amazonPayWallet = By.xpath("//button[.//span[text()='Amazon Pay']]");
 	By amazonPayWalletSelected = By.xpath("//button[.//span[text()='Amazon Pay']][contains(@class,'selected')]");
-	By payButton = By.xpath("//*[@role='button'][./span[@id='footer-cta'][contains(text(),'Pay')]]");
+	By payButton = By.xpath(
+			"//*[@role='button'][./span[@id='footer-cta'][contains(text(),'Pay')]] | //button[contains(text(),'Pay Now')]");
 
 	By newAmountField = By.xpath("//input[@placeholder='Enter Amount']");
 	By newPayButton = By.xpath("//button[text()='Pay']");

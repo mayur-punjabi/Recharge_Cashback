@@ -396,6 +396,7 @@ public class RazorPay extends CommonFunctions implements RazorPay_OR {
 		}
 
 		jsScrollToElement(wallet);
+		pause(1500);
 		click(wallet);
 
 		if (!waitForElement(amazonPayWallet, 5, WaitType.visibilityOfElementLocated)) {
