@@ -1,5 +1,7 @@
 package amazon.login.spinoffer;
 
+import org.openqa.selenium.By;
+
 import amazon.CommonFunctions;
 import framework.constants.WaitType;
 import framework.input.Configuration;
@@ -16,6 +18,14 @@ public class SpinOffer extends CommonFunctions implements SpinOffer_OR {
 			log.error(failure);
 			return failure;
 		}
+
+		String answer = Configuration.getProperty("spinAnswer");
+		if (answer == null || answer.trim().isEmpty()) {
+			failure = "Answer not present in config";
+			log.error(failure);
+			return failure;
+		}
+		By currentAnswerLoc = getLocator(answerLoc, answer, answer);
 
 		if (!launchApplication(spinOfferURL)) {
 			failure = "Failed to launch Spin Offer url - " + spinOfferURL;
@@ -35,7 +45,8 @@ public class SpinOffer extends CommonFunctions implements SpinOffer_OR {
 
 		boolean handleSpin = true;
 		if (!waitForElement(spinButton, 7, WaitType.visibilityOfElementLocated)) {
-			if (isElementDisplayed(answer) || waitForElement(collectOffer, 5, WaitType.visibilityOfElementLocated)) {
+			if (isElementDisplayed(currentAnswerLoc)
+					|| waitForElement(collectOffer, 5, WaitType.visibilityOfElementLocated)) {
 				handleSpin = false;
 			} else {
 				failure = "Spin button isn't present";
@@ -47,12 +58,15 @@ public class SpinOffer extends CommonFunctions implements SpinOffer_OR {
 		if (handleSpin) {
 			click(spinButton);
 
-			if (!waitForElement(claimYourPrizeButton, 30, WaitType.visibilityOfElementLocated)) {
-				failure = "Claim your prize button isn't present";
+			if (!waitForElement(claimOrAnswer, 30, WaitType.visibilityOfElementLocated)) {
+				failure = "Claim your prize or Answer button isn't present";
 				reportFailure(failure);
 				return failure;
 			}
-			click(claimYourPrizeButton);
+
+			if (isElementDisplayed(claimYourPrizeButton)) {
+				click(claimYourPrizeButton);
+			}
 
 			if (!waitForElement(answerQuestionButton, 30, WaitType.visibilityOfElementLocated)) {
 				failure = "Answer question button isn't present";
@@ -61,15 +75,15 @@ public class SpinOffer extends CommonFunctions implements SpinOffer_OR {
 			}
 			click(answerQuestionButton);
 
-			if (!waitForElement(answer, 30, WaitType.visibilityOfElementLocated)) {
+			if (!waitForElement(currentAnswerLoc, 30, WaitType.visibilityOfElementLocated)) {
 				failure = "Answer 30 isn't present";
 				reportFailure(failure);
 				return failure;
 			}
 		}
 
-		if (isElementDisplayed(answer)) {
-			click(answer);
+		if (isElementDisplayed(currentAnswerLoc)) {
+			click(currentAnswerLoc);
 		}
 
 		waitForPageLoad(60);
