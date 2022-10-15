@@ -16,7 +16,7 @@ public class OrderProductSuite extends BaseSuite {
 	@Parameters({ "isParallel", "starting", "ending", "statusFilePath" })
 	public void orderProduct(String isParallel, String starting, String ending, String statusFilePath) {
 
-		String csvFilePath = "./excel/orderProduct.csv";
+		String csvFilePath = "./excel/orderproduct.csv";
 		List<List<String>> data = cf.getCSVData(csvFilePath);
 		int startIndex = 1;
 		int endIndex = data.size();
@@ -26,16 +26,12 @@ public class OrderProductSuite extends BaseSuite {
 			endIndex = Integer.parseInt(ending);
 		} else {
 			cf.clearCSVFile(csvFilePath);
-			statusFilePath = cf.createStatusFile("orderProduct");
+			statusFilePath = cf.createStatusFile("orderproduct");
 		}
 
 		cf.log.debug(startIndex + " " + endIndex);
 
 		String loggedInStore = "";
-
-		// by pass store login mobile otp issue
-		cf.launchApplication(
-				"https://www.amazon.in/ap/signin?openid.pape.max_auth_age=1209600&openid.return_to=https%3A%2F%2Fwww.amazon.in%2Fh%2Frewards%2Fdp%2Famzn1.rewards.rewardAd.INWZGJOWJDCUC%3Frdpf%3Den&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.assoc_handle=inflex&openid.mode=checkid_setup&language=en_IN&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0");
 
 		for (int i = startIndex - 1; i < endIndex; i++) {
 
@@ -48,7 +44,7 @@ public class OrderProductSuite extends BaseSuite {
 				continue;
 			}
 
-			if (line.size() < 12) {
+			if (line.size() < 5) {
 				String dataString = line.stream().collect(Collectors.joining(","));
 				cf.log.error("Improper data provided at row - " + (i + 1) + ". Data - " + dataString);
 				failure = "Improper data provided. Data - " + dataString;
@@ -58,14 +54,7 @@ public class OrderProductSuite extends BaseSuite {
 			String storePassword = line.get(1);
 			String phoneOrEmail = cf.phoneOrEmail(line.get(2));
 			String password = line.get(3);
-			String subscribe = line.get(4);
-			String quantity = line.get(5);
-			String name = line.get(6);
-			String mobile = line.get(7);
-			String pincode = line.get(8);
-			String flat = line.get(9);
-			String area = line.get(10);
-			String checkCashback = line.get(11);
+			String gv = line.get(4);
 
 			try {
 
@@ -83,8 +72,6 @@ public class OrderProductSuite extends BaseSuite {
 
 				if (failure.isEmpty()) {
 
-					cf.launchApplication("https://store.amazon.in/");
-
 					loggedInStore = storeEmail;
 
 					failure = login.launchAndLogin(phoneOrEmail, password);
@@ -93,8 +80,7 @@ public class OrderProductSuite extends BaseSuite {
 
 						// order product
 						OrderProduct orderProduct = new OrderProduct();
-						failure = orderProduct.launchAndOrderProduct(subscribe, quantity, name, mobile, pincode, flat,
-								area, checkCashback);
+						failure = orderProduct.launchAndOrderProduct(gv);
 					}
 				}
 
@@ -105,7 +91,7 @@ public class OrderProductSuite extends BaseSuite {
 				cf.reportFailure(failure, e);
 			}
 
-			cf.updateStatusFile(statusFilePath, line, failure, 12);
+			cf.updateStatusFile(statusFilePath, line, failure, 5);
 
 			// stop execution in case of clear cookies
 			if (failure.equals("Clear cookies")) {

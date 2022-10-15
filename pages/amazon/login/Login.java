@@ -260,10 +260,20 @@ public class Login extends CommonFunctions implements Login_OR {
 		}
 
 		setValue(emailOrPhone, phoneOrEmail);
+		pause(500);
 		setValue(passwordField, password);
-
+		pause(1000);
 		click(signInButton);
 		waitForPageLoad(60);
+
+		if (waitForElement(emailOrPhone, 5, WaitType.visibilityOfElementLocated)) {
+			setValue(emailOrPhone, phoneOrEmail);
+			pause(500);
+			setValue(passwordField, password);
+			pause(500);
+			click(signInButton);
+			waitForPageLoad(60);
+		}
 
 		if (waitForElement(incorrectPhoneNo, 5, WaitType.visibilityOfElementLocated)) {
 			failure = "Incorrect phone number";
@@ -318,7 +328,7 @@ public class Login extends CommonFunctions implements Login_OR {
 
 			log.debug("Approve notification is present");
 
-			if (!waitForElement(approveNotification, 60 * 5, WaitType.invisibilityOfElementLocated)) {
+			if (!waitForElement(approveNotification, 60, WaitType.invisibilityOfElementLocated)) {
 				failure = "Notification not approved";
 				reportFailure(failure);
 				return failure;

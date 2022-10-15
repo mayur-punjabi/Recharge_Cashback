@@ -28,4 +28,6 @@ public interface Login_OR {
 	By otp = By.xpath("(//input[following-sibling::*[normalize-space()='Get OTP']])[last()]");
 	By approveNotification = By.xpath("//span[contains(text(),'approve the notification')]");
 
+	By storeSignInButton = By.xpath("//a[.='Sign in']");
+
 }

@@ -505,6 +505,37 @@ public class CommonFunctions extends CommonActions implements Shared_OR {
 	}
 
 	/**
+	 * click on WebElement
+	 * 
+	 * @param element WebElement
+	 * 
+	 */
+	public void click(WebElement element) {
+		// set the Element Name
+		String elementName = null;
+		try {
+			elementName = element.toString();
+
+			try {
+
+				// click on webElement
+				element.click();
+
+				// wait for page to load
+				log.debug(elementName + " is clicked");
+
+			} catch (StaleElementReferenceException e) {
+				log.error("StaleElementReferenceException occurred in clicking '" + elementName
+						+ "'. Getting the element again and trying to click again");
+			} catch (WebDriverException wde) {
+				log.error("Exception occurred in clicking '" + elementName + "'", wde);
+			}
+		} catch (NoSuchElementException e) {
+			log.error("Element not found - '" + elementName + "'" + elementName + "' while clicking");
+		}
+	}
+
+	/**
 	 * To scroll to given element inside browser default window using By locator
 	 * 
 	 * @param locator: By

@@ -62,7 +62,7 @@ public interface Shared_OR {
 	By addOrUseAddress = By.xpath(
 			"(//input[following-sibling::*[normalize-space()='Add address']])[last()] | (//input[following-sibling::*[normalize-space()='Use this address']])[last()]");
 
-	By placeYourOrderButton = By.xpath("//input[contains(@name,'placeYourOrder1')]");
+	By placeYourOrderButton = By.xpath("//input[contains(@name,'placeYourOrder1')][not(@disabled)]");
 
 	By amazonImgBlackLoading = By.id("redirect-spinner-overlay");
 	By blackLoading = By.id("pageWaitSpinner");
