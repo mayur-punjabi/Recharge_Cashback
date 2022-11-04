@@ -11,11 +11,10 @@ import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 
-import amazon.CommonFunctions;
 import framework.constants.WaitType;
 import framework.input.Configuration;
 
-public class OrderFresh extends CommonFunctions implements OrderFresh_OR {
+public class OrderFresh extends OrderProduct implements OrderFresh_OR {
 
 	public String launchAndOrderProduct(String gv) {
 

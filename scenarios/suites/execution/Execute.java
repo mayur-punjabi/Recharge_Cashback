@@ -14,7 +14,7 @@ public class Execute {
 
 	public static void main(String[] args) {
 
-		executeSuite(args[0], args[1], args[2], args[3], args[4], args[5]);
+		executeSuite(args[0], args[1], args[2], args[3], args[4], args[5], args[6]);
 	}
 
 	/**
@@ -23,7 +23,7 @@ public class Execute {
 	 * @param suite CashbackSuite or RechargeSuite
 	 */
 	private static void executeSuite(String suite, String isParallel, String starting, String ending,
-			String statusFilePath, String isAndroid) {
+			String statusFilePath, String isAndroid, String isStore) {
 
 		TestNG testng = new TestNG();
 
@@ -37,6 +37,7 @@ public class Execute {
 		// add parameters to the suite
 		Map<String, String> suiteParameters = new HashMap<>();
 		suiteParameters.put("isAndroid", isAndroid);
+		suiteParameters.put("isStore", isStore);
 		xmlSuite.setParameters(suiteParameters);
 
 		// create test

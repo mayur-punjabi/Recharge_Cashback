@@ -2,13 +2,14 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="RechargeSuite">
 	<parameter name="isAndroid" value="false" />
+	<parameter name="isStore" value="true" />
 	<test name="RechargeSuite">
 		<parameter name="isParallel" value="false" />
 		<parameter name="starting" value="" />
 		<parameter name="ending" value="" />
 		<parameter name="statusFilePath" value="" />
 		<classes>
-			<class name="suites.appsuites.OrderProductSuite" />
+			<class name="suites.appsuites.OrderFreshSuite" />
 		</classes>
 	</test>
 </suite>

@@ -26,8 +26,14 @@ public interface Login_OR {
 	By sightImpaired = By.xpath("//a[contains(text(),'sight impaired')]");
 
 	By otp = By.xpath("(//input[following-sibling::*[normalize-space()='Get OTP']])[last()]");
+	By storeOTP = By.id("auth-mfa-otpcode");
+	By mfaSignInButton = By.xpath("//input[./following-sibling::*[contains(text(),'Sign In')]]");
 	By approveNotification = By.xpath("//span[contains(text(),'approve the notification')]");
 
 	By storeSignInButton = By.xpath("//a[.='Sign in']");
 
+	// TOTP
+	By secretKeyInput = By.xpath("//input[contains(@placeholder,'secret key')]");
+	By token = By.id("token");
+	By oldToken = By.xpath("//p[@id='token'][not(text()='%s')]");
 }

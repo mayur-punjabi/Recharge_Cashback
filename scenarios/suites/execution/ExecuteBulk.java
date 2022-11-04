@@ -14,7 +14,7 @@ public class ExecuteBulk extends Operations {
 
 	public static void main(String[] args) {
 		ExecuteBulk eb = new ExecuteBulk();
-		eb.executeSuite(args[0], args[1]);
+		eb.executeSuite(args[0], args[1], args[2]);
 	}
 
 	/**
@@ -22,7 +22,7 @@ public class ExecuteBulk extends Operations {
 	 * 
 	 * @param suite CashbackSuite or RechargeSuite
 	 */
-	private void executeSuite(String suite, String isAndroid) {
+	private void executeSuite(String suite, String isAndroid, String isStore) {
 
 		String flow = suite.replace("Suite", "").toLowerCase();
 		List<String> statusFiles = new ArrayList<>();
@@ -31,7 +31,6 @@ public class ExecuteBulk extends Operations {
 		List<List<String>> data = getCSVData(csvFilePath);
 
 		int totalRecords = data.size();
-		int noOfExecutions = Integer.parseInt(Configuration.getProperty("noOfExecutions"));
 
 		List<Process> aliveExecutions = new CopyOnWriteArrayList<>();
 
@@ -47,8 +46,9 @@ public class ExecuteBulk extends Operations {
 			statusFiles.add(statusFilePath);
 
 			try {
-				Process p = Runtime.getRuntime().exec("cmd /c start /wait cmd.exe /c java -jar project/execute.jar "
-						+ suite + " true " + starting + " " + ending + " " + statusFilePath + " " + isAndroid);
+				Process p = Runtime.getRuntime()
+						.exec("cmd /c start /wait cmd.exe /c java -jar project/execute.jar " + suite + " true "
+								+ starting + " " + ending + " " + statusFilePath + " " + isAndroid + " " + isStore);
 				aliveExecutions.add(p);
 
 				try {

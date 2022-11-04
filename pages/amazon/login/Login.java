@@ -1,6 +1,7 @@
 package amazon.login;
 
 import org.apache.commons.codec.binary.Base64;
+import org.openqa.selenium.WindowType;
 
 import com.assertthat.selenium_shutterbug.core.Shutterbug;
 import com.twocaptcha.TwoCaptcha;
@@ -234,7 +235,7 @@ public class Login extends CommonFunctions implements Login_OR {
 		return failure;
 	}
 
-	public String launchAndLoginStore(String phoneOrEmail, String password) {
+	public String launchAndLoginStore(String phoneOrEmail, String password, String secret) {
 
 		String failure = "";
 
@@ -322,6 +323,19 @@ public class Login extends CommonFunctions implements Login_OR {
 			failure = "Mobile OTP required for store login";
 			reportFailure(failure);
 			return failure;
+		}
+
+		if (waitForElement(storeOTP, 5, WaitType.visibilityOfElementLocated)) {
+			failure = enterOTP(secret);
+			closeAllwindowExcept(globalWinHandle);
+			if (!failure.isEmpty() && !failure.contains("token - ")) {
+				return failure;
+			}
+			setValue(storeOTP, failure.replace("token - ", ""));
+			waitForElement(mfaSignInButton, 5, WaitType.elementToBeClickable);
+			javaScriptClick(mfaSignInButton);
+			waitForPageLoad(60);
+			failure = "";
 		}
 
 		if (waitForElement(approveNotification, 5, WaitType.visibilityOfElementLocated)) {
@@ -426,5 +440,44 @@ public class Login extends CommonFunctions implements Login_OR {
 				pause(2000);
 			}
 		}
+	}
+
+	public String enterOTP(String secret) {
+
+		String failure = "";
+
+		String totpURL = Configuration.getProperty("totpURL");
+		if (totpURL == null || totpURL.trim().isEmpty()) {
+			failure = "TOTP URL not present in config";
+			reportFailure(failure);
+			return failure;
+		}
+
+		driver.switchTo().newWindow(WindowType.TAB);
+		if (!launchApplication(totpURL)) {
+			failure = "Failed to launch TOTP URL";
+			reportFailure(failure);
+			return failure;
+		}
+
+		if (!waitForElement(secretKeyInput, 5, WaitType.visibilityOfElementLocated)) {
+			failure = "Secret key input not present";
+			reportFailure(failure);
+			return failure;
+		}
+
+		String tokenValue = getText(token);
+
+		setValue(secretKeyInput, secret);
+
+		if (!waitForElement(getLocator(oldToken, tokenValue), 35, WaitType.visibilityOfElementLocated)) {
+			failure = "Token didn't update";
+			reportFailure(failure);
+			return failure;
+		}
+
+		failure = "token - " + getText(token);
+		log.debug(failure);
+		return failure;
 	}
 }
