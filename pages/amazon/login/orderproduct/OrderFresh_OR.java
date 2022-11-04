@@ -4,12 +4,19 @@ import org.openqa.selenium.By;
 
 public interface OrderFresh_OR {
 
+	By addLocation = By.xpath("//*[contains(text(),'Select a location') or contains(text(),'Deliver to')]");
+	By manageAddress = By.name("MANAGE_ADDRESS");
+	By addressSaved = By.xpath("//h4[text()='Address saved']");
+	By addressExist = By.xpath(
+			"//input[contains(@aria-label,'%s') and contains(@aria-label,'%s') and contains(@aria-label,'%s') and contains(@aria-label,'%s')]");
+
 	By addToCart = By.xpath(
 			"(//input[contains(@aria-labelledby,'fresh')][following-sibling::*[normalize-space()='Add to Cart']])");
-	By cartItems = By.xpath("//div[contains(@class,'active-cart--selected')]/*[contains(@class,'item')]");
 	By quantityButton = By.xpath("//button[contains(text(),'Qty')]");
+	By quantityOption = By.xpath("//ul[contains(@class,'list-link')]//li[text()='%s']");
 
 	By done = By.xpath("//ul[contains(@class,'list-link')]//ancestor::div//span[text()='Done']");
+	By closeIcon = By.xpath("//span[contains(@class,'icon-close')]");
 
 	By freshOption = By.xpath("//a[contains(@class,'accordion-row')][.//span[contains(text(),'Fresh')]]");
 	By freshItemOrOption = By.xpath(
@@ -20,8 +27,6 @@ public interface OrderFresh_OR {
 
 	By useThisPaymentMethod = By.xpath("//input[following-sibling::*[normalize-space()='Use this payment method']]");
 
-	By freshOrderPlaced = By.xpath("//*[contains(text(),'Fresh order') and contains(text(),'placed')]");
-
-	By placeYourOrderButton2 = By
-			.xpath("//div[@id='subtotalsSection']//input[contains(@name,'placeYourOrder1')][not(@disabled)]");
+	By freshOrderPlaced = By
+			.xpath("//h2[contains(normalize-space(),'Fresh order') and contains(normalize-space(),'placed')]");
 }

@@ -232,7 +232,8 @@ public class OrderBeauty extends OrderProduct implements OrderBeauty_OR {
 			}
 
 			if (isElementDisplayed(addGV)) {
-				click(addGV);
+				waitForElement(addGV, 5, WaitType.elementToBeClickable);
+				javaScriptClick(addGV);
 			}
 			if (!waitForElement(enterCodeInput, 10, WaitType.visibilityOfElementLocated)) {
 				failure = "Enter code input not present";

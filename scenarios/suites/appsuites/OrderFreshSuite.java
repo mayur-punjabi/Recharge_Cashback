@@ -44,7 +44,7 @@ public class OrderFreshSuite extends BaseSuite {
 				continue;
 			}
 
-			if (line.size() < 6) {
+			if (line.size() < 11) {
 				String dataString = line.stream().collect(Collectors.joining(","));
 				cf.log.error("Improper data provided at row - " + (i + 1) + ". Data - " + dataString);
 				failure = "Improper data provided. Data - " + dataString;
@@ -55,7 +55,12 @@ public class OrderFreshSuite extends BaseSuite {
 			String secret = line.get(2);
 			String phoneOrEmail = cf.phoneOrEmail(line.get(3));
 			String password = line.get(4);
-			String gv = line.get(5);
+			String name = line.get(5);
+			String mobile = line.get(6);
+			String pincode = line.get(7);
+			String flat = line.get(8);
+			String area = line.get(9);
+			String gv = line.get(10);
 
 			try {
 
@@ -81,7 +86,7 @@ public class OrderFreshSuite extends BaseSuite {
 
 						// order product
 						OrderFresh orderFresh = new OrderFresh();
-						failure = orderFresh.launchAndOrderProduct(gv);
+						failure = orderFresh.launchAndOrderProduct(name, mobile, pincode, flat, area, gv);
 					}
 				}
 
@@ -92,7 +97,7 @@ public class OrderFreshSuite extends BaseSuite {
 				cf.reportFailure(failure, e);
 			}
 
-			cf.updateStatusFile(statusFilePath, line, failure, 6);
+			cf.updateStatusFile(statusFilePath, line, failure, 11);
 
 			// stop execution in case of clear cookies
 			if (failure.equals("Clear cookies")) {

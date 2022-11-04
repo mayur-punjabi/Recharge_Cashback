@@ -4,19 +4,19 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebElement;
 
 import framework.constants.WaitType;
 import framework.input.Configuration;
 
 public class OrderFresh extends OrderProduct implements OrderFresh_OR {
 
-	public String launchAndOrderProduct(String gv) {
+	public String launchAndOrderProduct(String name, String mobile, String pincode, String flat, String area,
+			String gv) {
 
 		String failure = "";
 
@@ -47,11 +47,15 @@ public class OrderFresh extends OrderProduct implements OrderFresh_OR {
 			return failure;
 		}
 
+		failure = addLocation(name, mobile, pincode, flat, area);
+		if (!failure.isEmpty()) {
+			return failure;
+		}
+
 		for (int i = 0; i < links.size(); i++) {
 
 			String link = links.get(i);
 			String quantity = quantities.get(i);
-			int itemCount = i + 1;
 
 			launchApplication(link);
 			waitForPageLoad(120);
@@ -84,10 +88,9 @@ public class OrderFresh extends OrderProduct implements OrderFresh_OR {
 				return failure;
 			}
 
-			Optional<WebElement> currentQuantity = getList(quantityOptions).stream()
-					.filter(option -> option.getText().trim().equals(quantity)).findFirst();
-			if (currentQuantity.isPresent()) {
-				click(currentQuantity.get());
+			By currentQuantity = getLocator(quantityOption, quantity);
+			if (isElementExists(currentQuantity)) {
+				javaScriptClick(currentQuantity);
 			} else {
 				failure = "Quantity - " + quantity + " isn't present";
 				reportFailure(failure);
@@ -95,7 +98,7 @@ public class OrderFresh extends OrderProduct implements OrderFresh_OR {
 			}
 
 			if (isElementDisplayed(done)) {
-				click(done);
+				javaScriptClick(done);
 			}
 
 			// wait for all quantity lists to close
@@ -115,24 +118,31 @@ public class OrderFresh extends OrderProduct implements OrderFresh_OR {
 				return failure;
 			}
 			click(addToCart);
+		}
 
-			// wait for all items to add in cart
-			try {
-				wait.withTimeout(Duration.ofSeconds(10)).ignoring(StaleElementReferenceException.class)
-						.until(driver -> driver.findElements(cartItems).size() == itemCount);
-				log.debug("All items added");
-			} catch (TimeoutException e) {
-				failure = "Failed to add item to cart";
-				reportFailure(failure);
-				return failure;
-			}
-
+		// close shop fresh popup
+		if (waitForElement(closeIcon, 5, WaitType.visibilityOfElementLocated)) {
+			click(closeIcon);
 		}
 
 		javaScriptClick(cart);
 		waitForPageLoad(120);
 
-		if (!waitForElement(buyFreshItems, 5, WaitType.visibilityOfElementLocated)) {
+		// check all items added or not
+		if (!waitForElement(cartItems, 5, WaitType.visibilityOfElementLocated)) {
+			failure = "Failed to open cart";
+			reportFailure(failure);
+			return failure;
+		}
+
+		int cartCount = getList(cartItems).size();
+		if (cartCount != links.size()) {
+			failure = "Failed to add all items in cart. Cart items count - " + cartCount;
+			reportFailure(failure);
+			return failure;
+		}
+
+		if (!isElementDisplayed(buyFreshItems)) {
 			failure = "Buy fresh items button not present";
 			reportFailure(failure);
 			return failure;
@@ -164,7 +174,8 @@ public class OrderFresh extends OrderProduct implements OrderFresh_OR {
 			}
 
 			if (isElementDisplayed(addGV)) {
-				click(addGV);
+				waitForElement(addGV, 5, WaitType.elementToBeClickable);
+				javaScriptClick(addGV);
 			}
 			if (!waitForElement(enterCodeInput, 10, WaitType.visibilityOfElementLocated)) {
 				failure = "Enter code input not present";
@@ -205,17 +216,17 @@ public class OrderFresh extends OrderProduct implements OrderFresh_OR {
 			log.debug("GV was skipped");
 		}
 
-		if (!waitForElement(placeYourOrderButton2, 30, WaitType.visibilityOfElementLocated)) {
+		if (!waitForElement(placeYourOrderAndPayOrPlaceYourOrder, 30, WaitType.visibilityOfElementLocated)) {
 			failure = "Place your order button not present";
 			reportFailure(failure);
 			return failure;
 		}
 		pause(2000);
-		jsScrollToElement(placeYourOrderButton2);
+		jsScrollToElement(placeYourOrderAndPayOrPlaceYourOrder);
 		pause(3000);
-		jsScrollToElement(placeYourOrderButton2);
-		waitForElement(placeYourOrderButton2, 5, WaitType.elementToBeClickable);
-		click(placeYourOrderButton2);
+		jsScrollToElement(placeYourOrderAndPayOrPlaceYourOrder);
+		waitForElement(placeYourOrderAndPayOrPlaceYourOrder, 5, WaitType.elementToBeClickable);
+		click(placeYourOrderAndPayOrPlaceYourOrder);
 
 		// wait for yellow loading invisibility
 		try {
@@ -233,6 +244,58 @@ public class OrderFresh extends OrderProduct implements OrderFresh_OR {
 
 		if (!waitForElement(freshOrderPlaced, 30, WaitType.visibilityOfElementLocated)) {
 			failure = "Failed to order product";
+			reportFailure(failure);
+			return failure;
+		}
+
+		return failure;
+	}
+
+	public String addLocation(String name, String mobile, String pincode, String flat, String area) {
+
+		String failure = "";
+
+		javaScriptClick(addLocation);
+
+		if (!waitForElement(manageAddress, 10, WaitType.visibilityOfElementLocated)) {
+			failure = "Add address popup not present";
+			reportFailure(failure);
+			return failure;
+		}
+
+		By existingAddress = getLocator(addressExist, name, pincode, flat, area);
+		if (isElementDisplayed(existingAddress)) {
+			log.debug("Address exist");
+			click(existingAddress);
+			if (!waitForElement(manageAddress, 10, WaitType.invisibilityOfElementLocated)) {
+				failure = "Failed to select address";
+				reportFailure(failure);
+				return failure;
+			}
+			return failure;
+		}
+
+		click(manageAddress);
+		waitForPageLoad(120);
+
+		if (!waitForElement(addNewAddress, 10, WaitType.visibilityOfElementLocated)) {
+			failure = "Add new address link not present";
+			reportFailure(failure);
+			return failure;
+		}
+		click(addNewAddress);
+		waitForPageLoad(120);
+
+		failure = addAddressDetails(name, mobile, pincode, flat, area);
+		if (!failure.isEmpty()) {
+			return failure;
+		}
+
+		click(addOrUseAddress);
+		waitForPageLoad(120);
+
+		if (!waitForElement(addressSaved, 10, WaitType.visibilityOfElementLocated)) {
+			failure = "Failed to add address";
 			reportFailure(failure);
 			return failure;
 		}
