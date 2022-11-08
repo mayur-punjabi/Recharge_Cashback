@@ -9,7 +9,11 @@ public interface OrderProduct_OR {
 	By quantityList = By.xpath("//ul[contains(@class,'list-link')]");
 	By quantityOptions = By.xpath("//ul[contains(@class,'list-link')]//li");
 
+	By collapsedItemsList = By.xpath("//div[contains(@class,'collapsed-item-list')]");
 	By cartItems = By.xpath("//div[contains(@class,'item-content')]");
+	By collapsedItemsOrCartItems = By
+			.xpath("//div[contains(@class,'collapsed-item-list')] | //div[contains(@class,'item-content')]");
+	By deleteButton = By.xpath("//input[following-sibling::*[normalize-space()='Delete']]");
 
 	By addGV = By.xpath("//span[contains(text(),'Add Gift Card')]");
 	By enterCodeInput = By.xpath("//input[@placeholder='Enter Code']");
@@ -21,4 +25,6 @@ public interface OrderProduct_OR {
 			"(//input[following-sibling::*[normalize-space()='Continue']])[last()] | (//input[following-sibling::*[normalize-space()='Use this time slot']])[last()]");
 	By placeYourOrderAndPayOrPlaceYourOrder = By.xpath(
 			"//input[following-sibling::*[normalize-space()='Place Your Order and Pay']] | //input[contains(@name,'placeYourOrder1')][not(@disabled)]");
+
+	By deliveryDateTimeLoc = By.xpath("//span[contains(@id,'delivery-promise')]");
 }

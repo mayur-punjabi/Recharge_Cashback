@@ -21,6 +21,11 @@ public class OrderBeauty extends OrderProduct implements OrderBeauty_OR {
 
 		String failure = "";
 
+		failure = deleteCartItems();
+		if (!failure.isEmpty()) {
+			return failure;
+		}
+
 		List<String> quantities = new ArrayList<>();
 		List<String> links = new ArrayList<>();
 
@@ -324,7 +329,7 @@ public class OrderBeauty extends OrderProduct implements OrderBeauty_OR {
 				return failure;
 			}
 
-			failure = "Done - " + getText(tokenNumber);
+			failure = "Done - " + getText(tokenNumber) + " ";
 		} else {
 			if (!waitForElement(orderPlaced, 30, WaitType.visibilityOfElementLocated)) {
 				failure = "Failed to order product";
@@ -332,6 +337,12 @@ public class OrderBeauty extends OrderProduct implements OrderBeauty_OR {
 				return failure;
 			}
 		}
+
+		if (!failure.contains("Done - ")) {
+			failure = "Done - ";
+		}
+		String deliveryDateTime = getText(deliveryDateTimeLoc);
+		failure += deliveryDateTime;
 
 		return failure;
 	}

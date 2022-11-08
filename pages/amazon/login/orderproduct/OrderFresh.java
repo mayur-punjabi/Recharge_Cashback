@@ -20,6 +20,11 @@ public class OrderFresh extends OrderProduct implements OrderFresh_OR {
 
 		String failure = "";
 
+		failure = deleteCartItems();
+		if (!failure.isEmpty()) {
+			return failure;
+		}
+
 		List<String> quantities = new ArrayList<>();
 		List<String> links = new ArrayList<>();
 
@@ -247,6 +252,9 @@ public class OrderFresh extends OrderProduct implements OrderFresh_OR {
 			reportFailure(failure);
 			return failure;
 		}
+
+		String deliveryDateTime = getText(deliveryDateTimeLoc);
+		failure = "Done - " + deliveryDateTime;
 
 		return failure;
 	}
