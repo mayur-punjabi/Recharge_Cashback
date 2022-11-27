@@ -25,8 +25,6 @@ public interface OrderFresh_OR {
 
 	By continueButton = By.xpath("//a[normalize-space(text())='Continue']");
 
-	By useThisPaymentMethod = By.xpath("//input[following-sibling::*[normalize-space()='Use this payment method']]");
-
 	By freshOrderPlaced = By
 			.xpath("//h2[contains(normalize-space(),'Fresh order') and contains(normalize-space(),'placed')]");
 }

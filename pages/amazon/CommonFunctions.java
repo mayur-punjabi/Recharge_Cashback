@@ -639,10 +639,16 @@ public class CommonFunctions extends CommonActions implements Shared_OR {
 		}
 
 		// click place order and pay button
-		if (!waitForElement(placeOrderAndPay, 10, WaitType.visibilityOfElementLocated)) {
-			failure = "Pay Order and Pay button isn't present.";
-			reportFailure(failure);
-			return failure;
+		if (!waitForElement(placeOrderAndPayOrUseThisPaymentMethod, 10, WaitType.visibilityOfElementLocated)) {
+
+			if (!isElementDisplayed(selectPaymentMethod)) {
+
+				failure = "Pay Order and Pay or Use this payment method button isn't present.";
+				reportFailure(failure);
+				return failure;
+			} else {
+				log.debug("Select a payment method is present");
+			}
 		}
 
 		if (gv.trim().equalsIgnoreCase("card")) {
@@ -674,7 +680,7 @@ public class CommonFunctions extends CommonActions implements Shared_OR {
 			click(amazonPayLabel);
 		}
 
-		click(placeOrderAndPay);
+		click(placeOrderAndPayOrUseThisPaymentMethod);
 
 		// wait for continue without saving card popup
 		if (gv.trim().equalsIgnoreCase("card")) {
@@ -711,6 +717,7 @@ public class CommonFunctions extends CommonActions implements Shared_OR {
 		// wait for page load
 		waitForPageLoad(120);
 
+		boolean enterAddress = true;
 		if (!waitForElement(nameInput, 5, WaitType.visibilityOfElementLocated)) {
 
 			// check if otp button is present
@@ -719,111 +726,45 @@ public class CommonFunctions extends CommonActions implements Shared_OR {
 				return failure;
 			}
 
-			// check for recharge processing
-			failure = waitForPaymentProcessing(10, false, isCard, "");
-			if (failure.equals("Recharge was successful")) {
-				failure = "";
-				return failure;
-			} else if (failure.equals("Recharge processing didn't appear")) {
-				failure = "Name field not present after clicking Place order and buy button";
-				reportFailure(failure);
-			}
-			return failure;
-		}
-
-		failure = addAddressDetails(name, mobile, pincode, flat, area);
-		if (!failure.isEmpty()) {
-			return failure;
-		}
-
-		// click add address button
-		if (!waitForElement(addOrUseAddress, 2, WaitType.presenceOfElementLocated)) {
-			failure = "Add/Use Address button isn't present";
-			reportFailure(failure);
-			return failure;
-		}
-
-		jsScrollToElement(addOrUseAddress);
-		if (!waitForElement(addOrUseAddress, 2, WaitType.elementToBeClickable)) {
-			failure = "Add/Use Address button isn't clickable";
-			reportFailure(failure);
-			return failure;
-		}
-		click(addOrUseAddress);
-
-		// wait for loading
-		try {
-			pause(3000);
-			wait.withTimeout(Duration.ofSeconds(30)).ignoring(StaleElementReferenceException.class).until(
-					driver -> driver.findElements(yellowLoading).stream().allMatch(loading -> !loading.isDisplayed()));
-			log.debug("Loading disappeared after clicking Add Address button");
-		} catch (TimeoutException e) {
-			failure = "Loading didn't complete after clicking Add Address button";
-			reportFailure(failure);
-			return failure;
-		}
-
-		boolean skipSaveAdress = false;
-
-		// click save address button
-		if (!isElementDisplayed(saveAddressButton)) {
-
-			if (isElementDisplayed(useThisAddressButton)) {
-				log.debug("Use this address apppeared instead of save address");
-				skipSaveAdress = true;
-			} else {
-				failure = "Save Address button isn't present";
-				reportFailure(failure);
-				return failure;
-			}
-		}
-
-		if (!skipSaveAdress) {
-			if (!waitForElement(saveAddressButton, 2, WaitType.elementToBeClickable)) {
-				failure = "Save Address button isn't clickable";
-				reportFailure(failure);
-				return failure;
-			}
-			click(saveAddressButton);
-
-			// wait for loading
-			try {
-				pause(3000);
-				wait.withTimeout(Duration.ofSeconds(30)).ignoring(StaleElementReferenceException.class)
-						.until(driver -> driver.findElements(yellowLoading).stream()
-								.allMatch(loading -> !loading.isDisplayed()));
-				log.debug("Loading disappeared after clicking Save Address button");
-			} catch (TimeoutException e) {
-				failure = "Loading didn't complete after clicking Save Address button";
-				reportFailure(failure);
-				return failure;
-			}
-		}
-
-		waitForPageLoad(60);
-
-		boolean clickUseThisAddress = true;
-
-		// click use this address button
-		if (!waitForElement(useThisAddressButton, 5, WaitType.visibilityOfElementLocated)) {
-
+			// check if place your order button is present
 			if (isElementDisplayed(placeYourOrderButton)) {
-				log.debug("Place your order button displayed instead of use this address button");
-				clickUseThisAddress = false;
+				log.debug("Place your order button present instead of name");
+				enterAddress = false;
 			} else {
-				failure = "Use this address button isn't present";
-				reportFailure(failure);
+
+				// check for recharge processing
+				failure = waitForPaymentProcessing(10, false, isCard, "");
+				if (failure.equals("Recharge was successful")) {
+					failure = "";
+					return failure;
+				} else if (failure.equals("Recharge processing didn't appear")) {
+					failure = "Name field not present after clicking Place order and buy button";
+					reportFailure(failure);
+				}
 				return failure;
 			}
 		}
 
-		if (clickUseThisAddress) {
-			if (!waitForElement(useThisAddressButton, 2, WaitType.elementToBeClickable)) {
-				failure = "Use this address button isn't clickable";
+		if (enterAddress) {
+			failure = addAddressDetails(name, mobile, pincode, flat, area);
+			if (!failure.isEmpty()) {
+				return failure;
+			}
+
+			// click add address button
+			if (!waitForElement(addOrUseAddress, 2, WaitType.presenceOfElementLocated)) {
+				failure = "Add/Use Address button isn't present";
 				reportFailure(failure);
 				return failure;
 			}
-			click(useThisAddressButton);
+
+			jsScrollToElement(addOrUseAddress);
+			if (!waitForElement(addOrUseAddress, 2, WaitType.elementToBeClickable)) {
+				failure = "Add/Use Address button isn't clickable";
+				reportFailure(failure);
+				return failure;
+			}
+			click(addOrUseAddress);
 
 			// wait for loading
 			try {
@@ -831,11 +772,87 @@ public class CommonFunctions extends CommonActions implements Shared_OR {
 				wait.withTimeout(Duration.ofSeconds(30)).ignoring(StaleElementReferenceException.class)
 						.until(driver -> driver.findElements(yellowLoading).stream()
 								.allMatch(loading -> !loading.isDisplayed()));
-				log.debug("Loading disappeared after clicking Use this address button");
+				log.debug("Loading disappeared after clicking Add Address button");
 			} catch (TimeoutException e) {
-				failure = "Loading didn't complete after clicking Use this address button";
+				failure = "Loading didn't complete after clicking Add Address button";
 				reportFailure(failure);
 				return failure;
+			}
+
+			boolean skipSaveAdress = false;
+
+			// click save address button
+			if (!isElementDisplayed(saveAddressButton)) {
+
+				if (isElementDisplayed(useThisAddressButton)) {
+					log.debug("Use this address apppeared instead of save address");
+					skipSaveAdress = true;
+				} else {
+					failure = "Save Address button isn't present";
+					reportFailure(failure);
+					return failure;
+				}
+			}
+
+			if (!skipSaveAdress) {
+				if (!waitForElement(saveAddressButton, 2, WaitType.elementToBeClickable)) {
+					failure = "Save Address button isn't clickable";
+					reportFailure(failure);
+					return failure;
+				}
+				click(saveAddressButton);
+
+				// wait for loading
+				try {
+					pause(3000);
+					wait.withTimeout(Duration.ofSeconds(30)).ignoring(StaleElementReferenceException.class)
+							.until(driver -> driver.findElements(yellowLoading).stream()
+									.allMatch(loading -> !loading.isDisplayed()));
+					log.debug("Loading disappeared after clicking Save Address button");
+				} catch (TimeoutException e) {
+					failure = "Loading didn't complete after clicking Save Address button";
+					reportFailure(failure);
+					return failure;
+				}
+			}
+
+			waitForPageLoad(60);
+
+			boolean clickUseThisAddress = true;
+
+			// click use this address button
+			if (!waitForElement(useThisAddressButton, 5, WaitType.visibilityOfElementLocated)) {
+
+				if (isElementDisplayed(placeYourOrderButton)) {
+					log.debug("Place your order button displayed instead of use this address button");
+					clickUseThisAddress = false;
+				} else {
+					failure = "Use this address button isn't present";
+					reportFailure(failure);
+					return failure;
+				}
+			}
+
+			if (clickUseThisAddress) {
+				if (!waitForElement(useThisAddressButton, 2, WaitType.elementToBeClickable)) {
+					failure = "Use this address button isn't clickable";
+					reportFailure(failure);
+					return failure;
+				}
+				click(useThisAddressButton);
+
+				// wait for loading
+				try {
+					pause(3000);
+					wait.withTimeout(Duration.ofSeconds(30)).ignoring(StaleElementReferenceException.class)
+							.until(driver -> driver.findElements(yellowLoading).stream()
+									.allMatch(loading -> !loading.isDisplayed()));
+					log.debug("Loading disappeared after clicking Use this address button");
+				} catch (TimeoutException e) {
+					failure = "Loading didn't complete after clicking Use this address button";
+					reportFailure(failure);
+					return failure;
+				}
 			}
 		}
 
@@ -1188,35 +1205,13 @@ public class CommonFunctions extends CommonActions implements Shared_OR {
 		} catch (Exception e) {
 			log.error("Failed to get processingWaitTime", e);
 		}
-		if (waitForElement(yellowLoading2, timeToWait, WaitType.visibilityOfElementLocated)) {
-			if (!waitForElement(yellowLoading2, processingWaitTime, WaitType.invisibilityOfElementLocated)) {
-				failure = "Loading didn't complete after clicking Continue to Pay button/Place and order button";
-				reportFailure(failure);
-				return failure;
-			} else {
-				log.debug("Loading disappeared after clicking Continue to Pay button/Place and order button");
-			}
-		} else {
-			// verify recharge successful or not
-			if (!waitForElement(rechargePending, 5, WaitType.invisibilityOfElementLocated)) {
-				failure = "Recharge is pending. Please check manually";
-				reportFailure(failure);
-				return failure;
-			}
-			if (waitForElement(rechargeSuccessful, 5, WaitType.visibilityOfElementLocated)) {
-				failure = "Recharge was successful";
-				log.debug(failure);
-				return failure;
-			}
-			failure = "Recharge processing didn't appear";
-			if (reportNoProcessing) {
-				reportFailure(failure);
-			}
-			return failure;
-		}
 
 		// verify recharge successful or not
-		if (!waitForElement(rechargePending, 5, WaitType.invisibilityOfElementLocated)) {
+		if (waitForElement(rechargeSuccessful, processingWaitTime, WaitType.visibilityOfElementLocated)) {
+			failure = "Recharge was successful";
+			log.debug(failure);
+			return failure;
+		} else if (!waitForElement(rechargePending, 20, WaitType.invisibilityOfElementLocated)) {
 			failure = "Recharge is pending. Please check manually";
 			reportFailure(failure);
 			return failure;

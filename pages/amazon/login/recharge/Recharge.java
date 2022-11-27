@@ -2,6 +2,7 @@ package amazon.login.recharge;
 
 import java.time.Duration;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 
@@ -41,6 +42,14 @@ public class Recharge extends CommonFunctions implements Recharge_OR {
 				reportFailure(failure);
 				return failure;
 			}
+
+			if (!waitForElement(operatorSpan, 7, WaitType.visibilityOfElementLocated)) {
+				failure = "Operator selection isn't present";
+				reportFailure(failure);
+				return failure;
+			}
+
+			failure = selectOperator("vi postpaid");
 
 			// wait for amount field
 			if (!waitForElement(amountInput, 5, WaitType.visibilityOfElementLocated)) {
@@ -152,6 +161,34 @@ public class Recharge extends CommonFunctions implements Recharge_OR {
 			return failure;
 		}
 		waitForPageLoad(60);
+
+		return failure;
+	}
+
+	private String selectOperator(String operator) {
+
+		String failure = "";
+
+		click(operatorSpan);
+		if (!waitForElement(operatorLink, 10, WaitType.visibilityOfElementLocated)) {
+			failure = "Operator options list didn't open";
+			reportFailure(failure);
+			return failure;
+		}
+
+		By currentStateOption = getLocator(operatorOption, operator);
+		if (!isElementExists(currentStateOption)) {
+			failure = "State - '" + operator + "' is not present in the list";
+			reportFailure(failure);
+			return failure;
+		}
+		jsScrollToElement(currentStateOption);
+		click(currentStateOption);
+		if (!waitForElement(operatorLink, 5, WaitType.invisibilityOfElementLocated)) {
+			failure = "State options list didn't close after selecting - '" + operator + "'";
+			reportFailure(failure);
+			return failure;
+		}
 
 		return failure;
 	}

@@ -14,7 +14,7 @@ public interface Shared_OR {
 
 	By availableBalance = By.xpath(
 			"(//span[contains(normalize-space(.),'Use') and contains(normalize-space(.),'your') and contains(normalize-space(.),'Amazon Pay balance')])[last()]");
-	By enoughBalance = By.xpath("//*[contains(@class,'order-total-currency')][contains(text(),' 0')]");
+	By enoughBalance = By.xpath("//*[contains(text(),'Amazon Pay balance is recommended')]");
 	By amazonPayLabel = By
 			.xpath("//span[contains(text(),'Amazon Pay balance')]//ancestor::div[@class='a-radio']//label");
 
@@ -44,7 +44,11 @@ public interface Shared_OR {
 	By chooseAnOptionButton = By.xpath("//span[text()='Choose an Option']");
 	By bankOption = By.xpath("//li[@role='option']/a[text()='%s']");
 
+	By selectPaymentMethod = By.xpath("//h3[normalize-space()='Select a payment method']");
 	By placeOrderAndPay = By.xpath("(//input[following-sibling::*[normalize-space()='Place Order and Pay']])[last()]");
+	By useThisPaymentMethod = By.xpath("//input[following-sibling::*[normalize-space()='Use this payment method']]");
+	By placeOrderAndPayOrUseThisPaymentMethod = By.xpath(
+			"(//input[following-sibling::*[normalize-space()='Place Order and Pay']])[last()] | //input[following-sibling::*[normalize-space()='Use this payment method']]");
 
 	By sendOTPButton = By.xpath("//input[following-sibling::*[normalize-space()='Send OTP']]");
 
@@ -58,9 +62,10 @@ public interface Shared_OR {
 	By addressStateOption = By.xpath("//li[@role='option']/a[text()='%s']");
 	By cityInput = By.xpath("//input[contains(@id,'enterAddressCity')]");
 	By saveAddressButton = By.xpath("(//input[following-sibling::*[normalize-space()='Save Address']])[last()]");
-	By useThisAddressButton = By.xpath("//a[contains(text(),'Use this address')]");
+	By useThisAddressButton = By.xpath(
+			"//input[following-sibling::*[1][normalize-space()='Use this address']][not(@disabled)][not(@type='hidden')]");
 	By addOrUseAddress = By.xpath(
-			"(//input[following-sibling::*[normalize-space()='Add address']])[last()] | (//input[following-sibling::*[normalize-space()='Use this address']])[last()]");
+			"(//input[following-sibling::*[normalize-space()='Add address']])[last()] | //input[following-sibling::*[1][normalize-space()='Use this address']][not(@disabled)][not(@type='hidden')]");
 
 	By placeYourOrderButton = By.xpath("//input[contains(@name,'placeYourOrder1')][not(@disabled)]");
 
@@ -72,7 +77,7 @@ public interface Shared_OR {
 
 	// waitForPaymentProcessing()
 	By rechargeSuccessful = By.xpath(
-			"//h4[(contains(text(),'Your') and (contains(text(),'recharge is successful') or contains(text(),'is successful'))) or contains(text(),'Order placed')]");
+			"//h4[(contains(text(),'Your') and (contains(text(),'recharge is successful') or contains(text(),'is successful'))) or contains(text(),'Order placed')] | //payui-order-status-desktop-widget[(contains(@metadata,'recharge') or contains(@metadata,'payment')) and contains(@metadata,'successful')]");
 	By rechargePending = By
 			.xpath("//h4[contains(text(),'Your')][contains(text(),'is pending') or contains(text(),'within')]");
 
