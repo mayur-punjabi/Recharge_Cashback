@@ -25,4 +25,6 @@ public interface OrderBeauty_OR {
 	By tokenNumber = By.xpath("//span[text()='Token Number:']/../following-sibling::span");
 
 	By orderPlaced = By.xpath("//*[contains(normalize-space(),'Order placed')]");
+
+	By codLabel = By.xpath("//span[text()='Cash On Delivery']/ancestor::label");
 }

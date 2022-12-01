@@ -172,6 +172,9 @@ public class OrderFresh extends OrderProduct implements OrderFresh_OR {
 		waitForPageLoad(120);
 
 		if (!gv.trim().toLowerCase().equals("skip")) {
+
+			log.debug("gv");
+
 			if (!waitForElement(addGVorEnterCodeInput, 10, WaitType.visibilityOfElementLocated)) {
 				failure = "Add gift card link or Enter code input not present";
 				reportFailure(failure);
@@ -218,6 +221,9 @@ public class OrderFresh extends OrderProduct implements OrderFresh_OR {
 				click(useThisPaymentMethod);
 			}
 		} else if (gv.contains("@")) {
+
+			log.debug("upi");
+
 			failure = upi(gv);
 			if (!failure.isEmpty()) {
 				return failure;

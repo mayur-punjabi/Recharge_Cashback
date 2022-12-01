@@ -220,6 +220,8 @@ public class OrderBeauty extends OrderProduct implements OrderBeauty_OR {
 
 		if (gv.trim().toLowerCase().equals("store")) {
 
+			log.debug("store");
+
 			if (!waitForElement(payAtStoreOrLink, 5, WaitType.visibilityOfElementLocated)) {
 				failure = "Pay at store or Pay through link not present";
 				reportFailure(failure);
@@ -229,14 +231,24 @@ public class OrderBeauty extends OrderProduct implements OrderBeauty_OR {
 
 		} else if (gv.contains("@")) {
 
+			log.debug("upi");
+
 			failure = upi(gv);
 			if (!failure.isEmpty()) {
 				return failure;
 			}
 
+		} else if (gv.trim().toLowerCase().equals("cod")) {
+
+			log.debug("cod");
+
+			click(codLabel);
 		} else if (gv.trim().toLowerCase().equals("skip")) {
 			log.debug("Skip gv");
 		} else {
+
+			log.debug("gv");
+
 			if (!waitForElement(addGVorEnterCodeInput, 10, WaitType.visibilityOfElementLocated)) {
 				failure = "Add gift card link or Enter code input not present";
 				reportFailure(failure);
