@@ -217,21 +217,30 @@ public class OrderFresh extends OrderProduct implements OrderFresh_OR {
 			if (isElementDisplayed(useThisPaymentMethod)) {
 				click(useThisPaymentMethod);
 			}
+		} else if (gv.contains("@")) {
+			failure = upi(gv);
+			if (!failure.isEmpty()) {
+				return failure;
+			}
 		} else {
 			log.debug("GV was skipped");
 		}
 
-		if (!waitForElement(placeYourOrderAndPayOrPlaceYourOrder, 30, WaitType.visibilityOfElementLocated)) {
-			failure = "Place your order button not present";
-			reportFailure(failure);
-			return failure;
+		if (gv.contains("@")) {
+			log.debug("Skipping place your order button click  in case of upi id");
+		} else {
+			if (!waitForElement(placeYourOrderAndPayOrPlaceYourOrder, 30, WaitType.visibilityOfElementLocated)) {
+				failure = "Place your order button not present";
+				reportFailure(failure);
+				return failure;
+			}
+			pause(2000);
+			jsScrollToElement(placeYourOrderAndPayOrPlaceYourOrder);
+			pause(3000);
+			jsScrollToElement(placeYourOrderAndPayOrPlaceYourOrder);
+			waitForElement(placeYourOrderAndPayOrPlaceYourOrder, 5, WaitType.elementToBeClickable);
+			click(placeYourOrderAndPayOrPlaceYourOrder);
 		}
-		pause(2000);
-		jsScrollToElement(placeYourOrderAndPayOrPlaceYourOrder);
-		pause(3000);
-		jsScrollToElement(placeYourOrderAndPayOrPlaceYourOrder);
-		waitForElement(placeYourOrderAndPayOrPlaceYourOrder, 5, WaitType.elementToBeClickable);
-		click(placeYourOrderAndPayOrPlaceYourOrder);
 
 		// wait for yellow loading invisibility
 		try {

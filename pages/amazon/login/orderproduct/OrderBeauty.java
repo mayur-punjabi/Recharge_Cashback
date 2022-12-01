@@ -227,6 +227,13 @@ public class OrderBeauty extends OrderProduct implements OrderBeauty_OR {
 			}
 			javaScriptClick(payAtStoreOrLink);
 
+		} else if (gv.contains("@")) {
+
+			failure = upi(gv);
+			if (!failure.isEmpty()) {
+				return failure;
+			}
+
 		} else if (gv.trim().toLowerCase().equals("skip")) {
 			log.debug("Skip gv");
 		} else {
@@ -300,13 +307,18 @@ public class OrderBeauty extends OrderProduct implements OrderBeauty_OR {
 			}
 		}
 
-		if (!waitForElement(placeYourOrderAndPayOrPlaceYourOrder, 30, WaitType.visibilityOfElementLocated)) {
-			failure = "Place your order button not present";
-			reportFailure(failure);
-			return failure;
+		if (gv.contains("@")) {
+			log.debug("Skipping place your order button click  in case of upi id");
+		} else {
+
+			if (!waitForElement(placeYourOrderAndPayOrPlaceYourOrder, 30, WaitType.visibilityOfElementLocated)) {
+				failure = "Place your order button not present";
+				reportFailure(failure);
+				return failure;
+			}
+			waitForElement(placeYourOrderAndPayOrPlaceYourOrder, 5, WaitType.elementToBeClickable);
+			click(placeYourOrderAndPayOrPlaceYourOrder);
 		}
-		waitForElement(placeYourOrderAndPayOrPlaceYourOrder, 5, WaitType.elementToBeClickable);
-		click(placeYourOrderAndPayOrPlaceYourOrder);
 
 		// wait for yellow loading invisibility
 		try {

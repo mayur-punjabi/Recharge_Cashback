@@ -27,4 +27,10 @@ public interface OrderProduct_OR {
 			"//input[following-sibling::*[normalize-space()='Place Your Order and Pay']] | //input[contains(@name,'placeYourOrder1')][not(@disabled)]");
 
 	By deliveryDateTimeLoc = By.xpath("//span[contains(@id,'delivery-promise')]");
+
+	By upiLabel = By.xpath("//span[text()='Other UPI Apps']/ancestor::label");
+	By upiInput = By.xpath("//input[contains(@placeholder,'upi')]");
+	By verifyButton = By.xpath("//input[following-sibling::*[1][normalize-space()='Verify']]");
+	By upiVerified = By.xpath("//div[text()='Verified!']");
+	By completeUPIPayment = By.xpath("//h1[normalize-space()='Complete your payment']");
 }
