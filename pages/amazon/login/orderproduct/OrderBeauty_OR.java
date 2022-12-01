@@ -19,7 +19,8 @@ public interface OrderBeauty_OR {
 
 	By continueButton = By.xpath("//input[following-sibling::*[normalize-space()='Continue']]");
 
-	By payAtStore = By.xpath("//span[contains(text(),'Pay at Store')]/ancestor::label");
+	By payAtStoreOrLink = By
+			.xpath("//span[contains(text(),'Pay at Store') or contains(text(),'Pay through link')]/ancestor::label");
 
 	By tokenNumber = By.xpath("//span[text()='Token Number:']/../following-sibling::span");
 

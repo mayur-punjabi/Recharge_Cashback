@@ -220,12 +220,12 @@ public class OrderBeauty extends OrderProduct implements OrderBeauty_OR {
 
 		if (gv.trim().toLowerCase().equals("store")) {
 
-			if (!waitForElement(payAtStore, 5, WaitType.visibilityOfElementLocated)) {
-				failure = "Pay at store not present";
+			if (!waitForElement(payAtStoreOrLink, 5, WaitType.visibilityOfElementLocated)) {
+				failure = "Pay at store or Pay through link not present";
 				reportFailure(failure);
 				return failure;
 			}
-			javaScriptClick(payAtStore);
+			javaScriptClick(payAtStoreOrLink);
 
 		} else if (gv.trim().toLowerCase().equals("skip")) {
 			log.debug("Skip gv");
