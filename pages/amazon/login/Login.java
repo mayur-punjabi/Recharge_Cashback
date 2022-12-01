@@ -288,34 +288,49 @@ public class Login extends CommonFunctions implements Login_OR {
 			return failure;
 		}
 
-		if (waitForElement(clearCookies, 2, WaitType.visibilityOfElementLocated)) {
+		for (int i = 0; i < 2; i++) {
+			if (waitForElement(clearCookies, 5, WaitType.visibilityOfElementLocated)) {
 
-			pause(30000);
+				String solveCaptcha = Configuration.getProperty("solveCaptcha");
+				boolean handleCaptcha = solveCaptcha != null && solveCaptcha.trim().equalsIgnoreCase("yes");
 
-			setValue(passwordField, password);
+				if (handleCaptcha) {
 
-			click(signInButton);
-			waitForPageLoad(60);
+					if (isElementDisplayed(passwordField)) {
+						setValue(passwordField, password);
+					}
 
-			// setting password if displayed
-			if (waitForElement(passwordField, 5, WaitType.visibilityOfElementLocated)) {
+					solveCaptcha();
 
-				setValue(passwordField, password);
+					if (isElementDisplayed(signInButton)) {
+						click(signInButton);
+					} else if (isElementDisplayed(continueButton)) {
+						click(continueButton);
+					}
+					waitForPageLoad(60);
 
-				if (!isElementDisplayed(signInButton)) {
-					failure = "Sign in button isn't present after entering email and password";
+					// setting password if displayed
+					if (waitForElement(passwordField, 5, WaitType.visibilityOfElementLocated)) {
+
+						setValue(passwordField, password);
+
+						if (!isElementDisplayed(signInButton)) {
+							failure = "Sign in button isn't present after entering email and password";
+							reportFailure(failure);
+							return failure;
+						}
+
+						click(signInButton);
+						waitForPageLoad(60);
+					}
+
+				} else {
+					failure = "Clear cookies";
 					reportFailure(failure);
 					return failure;
 				}
-
-				click(signInButton);
-				waitForPageLoad(60);
-			}
-
-			if (waitForElement(clearCookies, 2, WaitType.visibilityOfElementLocated)) {
-				failure = "Clear cookies";
-				reportFailure(failure);
-				return failure;
+			} else {
+				break;
 			}
 		}
 
