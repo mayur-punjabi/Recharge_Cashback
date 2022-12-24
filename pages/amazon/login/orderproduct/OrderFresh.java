@@ -57,6 +57,13 @@ public class OrderFresh extends OrderProduct implements OrderFresh_OR {
 			return failure;
 		}
 
+		// wait for added address to get selected
+		if (!waitForElement(getLocator(addressSelected, pincode), 10, WaitType.visibilityOfElementLocated)) {
+			failure = "Added address didn't get selected";
+			reportFailure(failure);
+			return failure;
+		}
+
 		for (int i = 0; i < links.size(); i++) {
 
 			String link = links.get(i);
@@ -171,7 +178,29 @@ public class OrderFresh extends OrderProduct implements OrderFresh_OR {
 		click(continueButton2);
 		waitForPageLoad(120);
 
-		if (!gv.trim().toLowerCase().equals("skip")) {
+		// wait for yellow loading invisibility
+		try {
+			pause(3000);
+			wait.withTimeout(Duration.ofSeconds(30)).ignoring(StaleElementReferenceException.class).until(
+					driver -> driver.findElements(yellowLoading).stream().allMatch(loading -> !loading.isDisplayed()));
+			log.debug("Loading disappeared after clicking verify button");
+		} catch (TimeoutException e) {
+			failure = "Loading didn't complete after clicking verify button";
+			reportFailure(failure);
+			return failure;
+		}
+
+		if (gv.trim().toLowerCase().equals("skip")) {
+			log.debug("GV was skipped");
+		} else if (gv.contains("@")) {
+
+			log.debug("upi");
+
+			failure = upi(gv);
+			if (!failure.isEmpty()) {
+				return failure;
+			}
+		} else {
 
 			log.debug("gv");
 
@@ -220,16 +249,6 @@ public class OrderFresh extends OrderProduct implements OrderFresh_OR {
 			if (isElementDisplayed(useThisPaymentMethod)) {
 				click(useThisPaymentMethod);
 			}
-		} else if (gv.contains("@")) {
-
-			log.debug("upi");
-
-			failure = upi(gv);
-			if (!failure.isEmpty()) {
-				return failure;
-			}
-		} else {
-			log.debug("GV was skipped");
 		}
 
 		if (gv.contains("@")) {
@@ -319,6 +338,29 @@ public class OrderFresh extends OrderProduct implements OrderFresh_OR {
 
 		if (!waitForElement(addressSaved, 10, WaitType.visibilityOfElementLocated)) {
 			failure = "Failed to add address";
+			reportFailure(failure);
+			return failure;
+		}
+
+		// select the address
+		javaScriptClick(addLocation);
+
+		if (!waitForElement(manageAddress, 10, WaitType.visibilityOfElementLocated)) {
+			failure = "Add address popup not present after adding";
+			reportFailure(failure);
+			return failure;
+		}
+
+		if (!isElementDisplayed(existingAddress)) {
+			failure = "Address doesn't exist after adding";
+			reportFailure(failure);
+			return failure;
+		}
+
+		log.debug("Address exist after adding");
+		click(existingAddress);
+		if (!waitForElement(manageAddress, 10, WaitType.invisibilityOfElementLocated)) {
+			failure = "Failed to select address after adding";
 			reportFailure(failure);
 			return failure;
 		}

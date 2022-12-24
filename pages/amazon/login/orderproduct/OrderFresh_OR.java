@@ -9,6 +9,7 @@ public interface OrderFresh_OR {
 	By addressSaved = By.xpath("//h4[text()='Address saved']");
 	By addressExist = By.xpath(
 			"//input[contains(@aria-label,'%s') and contains(@aria-label,'%s') and contains(@aria-label,'%s') and contains(@aria-label,'%s')]");
+	By addressSelected = By.xpath("//*[contains(text(),'Deliver to') and contains(text(),'%s')]");
 
 	By addToCart = By.xpath(
 			"(//input[contains(@aria-labelledby,'fresh')][following-sibling::*[normalize-space()='Add to Cart']])");
@@ -21,7 +22,8 @@ public interface OrderFresh_OR {
 	By freshOption = By.xpath("//a[contains(@class,'accordion-row')][.//span[contains(text(),'Fresh')]]");
 	By freshItemOrOption = By.xpath(
 			"//a[contains(@class,'accordion-row')][.//span[contains(text(),'Fresh')]] | //span[contains(text(),'Fresh items')]");
-	By buyFreshItems = By.xpath("(//input[following-sibling::*[normalize-space()='Buy Fresh Items']])[last()]");
+	By buyFreshItems = By
+			.xpath("(//input[following-sibling::*[normalize-space()='Proceed to Buy Fresh Items']])[last()]");
 
 	By continueButton = By.xpath("//a[normalize-space(text())='Continue']");
 

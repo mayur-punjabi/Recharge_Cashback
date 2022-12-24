@@ -28,7 +28,7 @@ public interface OrderProduct_OR {
 
 	By deliveryDateTimeLoc = By.xpath("//span[contains(@id,'delivery-promise')]");
 
-	By upiLabel = By.xpath("//span[text()='Other UPI Apps']/ancestor::label");
+	By upiLabel = By.xpath("//span[text()='Other UPI Apps']/ancestor::label/i");
 	By upiInput = By.xpath("//input[contains(@placeholder,'upi')]");
 	By verifyButton = By.xpath("//input[following-sibling::*[1][normalize-space()='Verify']]");
 	By upiVerified = By.xpath("//div[text()='Verified!']");

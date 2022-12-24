@@ -86,6 +86,14 @@ public class OrderProduct extends CommonFunctions implements OrderProduct_OR {
 			return failure;
 		}
 
+		click(continueButton2);
+
+		if (!waitForElement(placeYourOrderAndPayOrPlaceYourOrder, 10, WaitType.visibilityOfElementLocated)) {
+			failure = "Place your order and pay button not present";
+			reportFailure(failure);
+			return failure;
+		}
+
 		click(placeYourOrderAndPayOrPlaceYourOrder);
 
 		// wait for yellow loading invisibility
@@ -101,6 +109,37 @@ public class OrderProduct extends CommonFunctions implements OrderProduct_OR {
 		}
 
 		waitForPageLoad(120);
+
+		// click continue and place your order and pay button again if present
+		if (waitForElement(continueButton2, 5, WaitType.visibilityOfElementLocated)) {
+
+			click(continueButton2);
+
+			if (!waitForElement(placeYourOrderAndPayOrPlaceYourOrder, 10, WaitType.visibilityOfElementLocated)) {
+				failure = "Place your order and pay button not present";
+				reportFailure(failure);
+				return failure;
+			}
+
+			click(placeYourOrderAndPayOrPlaceYourOrder);
+
+			// wait for yellow loading invisibility
+			try {
+				pause(3000);
+				wait.withTimeout(Duration.ofSeconds(30)).ignoring(StaleElementReferenceException.class)
+						.until(driver -> driver.findElements(yellowLoading).stream()
+								.allMatch(loading -> !loading.isDisplayed()));
+				log.debug("Loading disappeared after clicking verify button");
+			} catch (TimeoutException e) {
+				failure = "Loading didn't complete after clicking verify button";
+				reportFailure(failure);
+				return failure;
+			}
+
+			waitForPageLoad(120);
+		} else {
+			log.debug("Continue button not present again");
+		}
 
 		// wait for upi approve
 		if (!waitForElement(completeUPIPayment, 5, WaitType.visibilityOfElementLocated)) {
